@@ -1,26 +1,22 @@
 
 import {
   Avatar,
-  Badge,
   Box,
   IconButton,
   Stack,
   useMediaQuery
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { MenuOutlined, ShoppingCart } from '@mui/icons-material';
-// import { useSelector } from 'react-redux';
-import { useCartStore, usePopover } from '@/hooks';
+import { MenuOutlined } from '@mui/icons-material';
+import { usePopover } from '@/hooks';
 import { AccountPopover } from '.';
 import noimage from '@/assets/images/profile.png';
 
 const SIDE_NAV_WIDTH = 200;
 const TOP_NAV_HEIGHT = 50;
 
-export const TopNav = (({ onNavOpen, onTapBadge }: { onNavOpen: any, onTapBadge: any }) => {
+export const TopNav = (({ onNavOpen }: { onNavOpen: any }) => {
 
-  // const { data } = useSelector((state: any) => state.auth);
-  const { cart = [] } = useCartStore();
   const theme = useTheme();
   const lgUp = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -69,16 +65,6 @@ export const TopNav = (({ onNavOpen, onTapBadge }: { onNavOpen: any, onTapBadge:
             alignItems="center"
             spacing={2} direction="row"
           >
-            <IconButton onClick={()=>onTapBadge()} aria-label="cart" >
-              <Badge
-                badgeContent={cart.length}
-                color="primary"
-                overlap="circular"
-                sx={{ "& .MuiBadge-badge": { fontSize: 9, height: 15, minWidth: 15 } }}
-              >
-                <ShoppingCart/>
-              </Badge>
-            </IconButton>
 
             <Avatar
               onClick={accountPopover.handleOpen}

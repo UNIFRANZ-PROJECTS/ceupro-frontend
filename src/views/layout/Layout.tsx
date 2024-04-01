@@ -1,9 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { useLocation } from 'react-router-dom';
-import { SideNav, TopNav } from '.';
-import { CartDrawer } from './CartDrawer';
-import { CartView } from '../pages/cart';
+import { SideNav } from '.';
 
 const SIDE_NAV_WIDTH = 220;
 
@@ -26,14 +24,11 @@ const LayoutContainer = styled('div')({
 export const Layout = ({ children }: { children: any }) => {
   const { pathname } = useLocation();
   const [openNav, setOpenNav] = useState(false);
-  const [badgeOpen, setBadgeOpen] = useState(false)
   const handlePathnameChange = useCallback(
     () => {
-
-      if (badgeOpen) setBadgeOpen(false)
       if (openNav) setOpenNav(false)
     },
-    [openNav, badgeOpen]
+    [openNav]
   );
 
   useEffect(
@@ -45,19 +40,10 @@ export const Layout = ({ children }: { children: any }) => {
 
   return (
     <>
-      <TopNav
-        onNavOpen={() => setOpenNav(true)}
-        onTapBadge={() => setBadgeOpen(true)}
-      />
       <SideNav
         onClose={() => setOpenNav(false)}
         open={openNav}
       />
-      <CartDrawer
-        onClose={() => { setBadgeOpen(false) }}
-        open={badgeOpen}>
-          <CartView/>
-        </CartDrawer>
       <LayoutRoot>
         <LayoutContainer>
           {children}
