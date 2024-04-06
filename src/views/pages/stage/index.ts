@@ -1,1 +1,1 @@
-export * from './StageView';
+export * from './StageTable';

@@ -5,7 +5,7 @@ import { Add } from "@mui/icons-material";
 import { SeasonModel } from "@/models";
 import { SeasonCreate, SeasonTable } from ".";
 
-export const Season = () => {
+export const SeasonView = () => {
   const [openDialog, setopenDialog] = useState(false);
   const [itemEdit, setItemEdit] = useState<SeasonModel | null>(null);
 
@@ -32,14 +32,14 @@ export const Season = () => {
           handleDialog(true)
         }}
       />
-      {/* {
+      {
         openDialog &&
         <SeasonCreate
           open={openDialog}
           handleClose={() => handleDialog(false)}
-          item={itemEdit == null ? null : { ...itemEdit, ...itemEdit?.user }}
+          item={itemEdit == null ? null : { ...itemEdit }}
         />
-      } */}
+      }
     </>
   )
 }
