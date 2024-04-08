@@ -3,13 +3,13 @@ import { applyPagination } from "@/utils/applyPagination";
 import { Checkbox, IconButton, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import { DeleteOutline, EditOutlined } from "@mui/icons-material";
-import { StageModel } from "@/models";
+import { TypeProjectModel } from "@/models";
 import { useStageStore } from "@/hooks";
 import { StageCreate } from "./StageCreate";
 
 interface tableProps {
   limitInit?: number;
-  itemSelect?: (customer: StageModel) => void;
+  itemSelect?: (customer: TypeProjectModel) => void;
   items?: any[];
   stateSelect?: boolean;
 }
@@ -25,9 +25,9 @@ export const StageTable = (props: tableProps) => {
   const { stages = [], getStages, deleteStage } = useStageStore();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(limitInit);
-  const [stageList, setCategoryList] = useState<StageModel[]>([]);
+  const [stageList, setCategoryList] = useState<TypeProjectModel[]>([]);
   const [openDialog, setopenDialog] = useState(false);
-  const [itemEdit, setItemEdit] = useState<StageModel | null>(null);
+  const [itemEdit, setItemEdit] = useState<TypeProjectModel | null>(null);
   const [query, setQuery] = useState<string>('');
   /*CONTROLADOR DEL DIALOG PARA CREAR O EDITAR */
   const handleDialog = useCallback((value: boolean) => {
@@ -40,7 +40,7 @@ export const StageTable = (props: tableProps) => {
   }, []);
 
   useEffect(() => {
-    const filtered = stages.filter((e: StageModel) =>
+    const filtered = stages.filter((e: TypeProjectModel) =>
       e.name.toLowerCase().includes(query.toLowerCase())
     );
     const newList = applyPagination(
@@ -77,7 +77,7 @@ export const StageTable = (props: tableProps) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {stageList.map((stage: StageModel) => {
+            {stageList.map((stage: TypeProjectModel) => {
               const isSelected = items.includes(stage.id);
               return (
                 <TableRow key={stage.id} >

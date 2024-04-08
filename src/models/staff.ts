@@ -7,7 +7,7 @@ export interface StaffModel {
 }
 
 export interface FormStaffModel extends FormUserModel {
-  role: RoleModel;
+  role: RoleModel|null;
 }
 
 export interface FormStaffValidations extends FormUserValidations {

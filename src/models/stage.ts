@@ -1,6 +1,6 @@
 import { RequirementModel } from ".";
 
-export interface StageModel {
+export interface TypeProjectModel {
   id: number;
   name: string;
   start: Date;
@@ -9,7 +9,7 @@ export interface StageModel {
   requirements:RequirementModel[]
 }
 
-export interface FormStageModel {
+export interface FormTypeProjectModel {
   name: string;
   start: Date|null;
   end: Date|null;
@@ -17,7 +17,7 @@ export interface FormStageModel {
   requirements: RequirementModel[];
 }
 
-export interface FormStageValidations {
+export interface FormTypeProjectValidations {
   name: [(value: string) => boolean, string];
   start: [(value: Date) => boolean, string];
   end: [(value: Date) => boolean, string];

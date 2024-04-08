@@ -1,9 +1,9 @@
-import { ComponentButton } from "@/components"
-import { Stack, SvgIcon, Typography } from "@mui/material"
-import { useCallback, useState } from "react";
-import { Add } from "@mui/icons-material";
-import { RequirementModel } from "@/models";
-import { RequirementCreate, RequirementTable } from ".";
+import { ComponentButton } from '@/components';
+import { Stack, SvgIcon, Typography } from '@mui/material';
+import { useCallback, useState } from 'react';
+import { Add } from '@mui/icons-material';
+import { RequirementModel } from '@/models';
+import { RequirementCreate, RequirementTable } from '.';
 
 export const RequirementView = () => {
   const [openDialog, setopenDialog] = useState(false);
@@ -11,35 +11,36 @@ export const RequirementView = () => {
 
   /*CONTROLADOR DEL DIALOG PARA CREAR O EDITAR */
   const handleDialog = useCallback((value: boolean) => {
-    if (!value) setItemEdit(null)
+    if (!value) setItemEdit(null);
     setopenDialog(value);
   }, []);
   return (
     <>
-      <Stack
-        direction="row"
-        justifyContent="space-between"
-      >
-        <Typography variant="h6">Requisitos</Typography>
+      <Stack direction="row" justifyContent="space-between">
+        <Typography variant="h6">Requisitos de avances</Typography>
         <ComponentButton
-          text="Nueva temporada"
+          text="Nuevo Requisito"
           onClick={() => handleDialog(true)}
-          startIcon={<SvgIcon fontSize="small"><Add /></SvgIcon>} />
+          startIcon={
+            <SvgIcon fontSize="small">
+              <Add />
+            </SvgIcon>
+          }
+        />
       </Stack>
       <RequirementTable
         handleEdit={(v) => {
-          setItemEdit(v)
-          handleDialog(true)
+          setItemEdit(v);
+          handleDialog(true);
         }}
       />
-      {
-        openDialog &&
+      {openDialog && (
         <RequirementCreate
           open={openDialog}
           handleClose={() => handleDialog(false)}
           item={itemEdit == null ? null : { ...itemEdit }}
         />
-      }
+      )}
     </>
-  )
-}
+  );
+};

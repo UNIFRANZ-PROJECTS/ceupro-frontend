@@ -4,7 +4,7 @@ import { setRequirements, setAddRequirement, setUpdateRequirement, setDeleteRequ
 import Swal from 'sweetalert2';
 
 export const useRequirementStore = () => {
-  const { requirements } = useSelector((state: any) => state.Requirements);
+  const { requirements } = useSelector((state: any) => state.requirements);
   const dispatch = useDispatch();
 
   const getRequirements = async () => {
@@ -19,7 +19,8 @@ export const useRequirementStore = () => {
       dispatch(setAddRequirement({ requirement: data }));
       Swal.fire('Requisito creado correctamente', '', 'success');
     } catch (error: any) {
-      Swal.fire('Oops ocurrio algo', error.response.data.errors[0].msg, 'error');
+      console.log(error)
+      // Swal.fire('Oops ocurrio algo', error.response.data, 'error');
     }
   }
   const updateRequirement = async (id: number, body: object) => {

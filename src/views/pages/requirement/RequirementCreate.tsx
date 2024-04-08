@@ -1,5 +1,5 @@
 import { ComponentInput } from "@/components"
-import { useForm, useSeasonStore } from "@/hooks";
+import { useForm, useRequirementStore } from "@/hooks";
 import { FormRequirementModel, FormRequirementValidations,  RequirementModel } from "@/models";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from "@mui/material"
 import { FormEvent, useState } from "react";
@@ -30,7 +30,7 @@ export const RequirementCreate = (props: createProps) => {
     name, description,
     onInputChange, isFormValid, onResetForm,
     nameValid, descriptionValid} = useForm(item ?? formFields, formValidations);
-  const { createSeason, updateSeason } = useSeasonStore();
+  const { createRequirement, updateRequirement } = useRequirementStore();
   const [formSubmitted, setFormSubmitted] = useState(false);
 
   const sendSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -38,13 +38,13 @@ export const RequirementCreate = (props: createProps) => {
     setFormSubmitted(true);
     if (!isFormValid) return;
     if (item == null) {
-      createSeason(
+      createRequirement(
         {
           name: name.trim(),
           description: description.trim(),
         });
     } else {
-      updateSeason(item.id,
+      updateRequirement(item.id,
         {
           name: name.trim(),
           description: description.trim(),
@@ -56,8 +56,8 @@ export const RequirementCreate = (props: createProps) => {
 
   return (
     <>
-      <Dialog open={open} onClose={handleClose} >
-        <DialogTitle>{item == null ? 'Nuevo Rol' : `${item.name}`}</DialogTitle>
+      <Dialog open={open} onClose={handleClose} style={{zIndex:10000}} >
+        <DialogTitle>{item == null ? 'Nuevo Requisito' : `${item.name}`}</DialogTitle>
         <form onSubmit={sendSubmit}>
           <DialogContent sx={{ display: 'flex' }}>
             <Grid container>

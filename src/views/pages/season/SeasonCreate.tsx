@@ -1,6 +1,6 @@
 import { ComponentDate, ComponentInput, ComponentSelect, ModalSelectComponent } from "@/components"
 import { useForm, useSeasonStore } from "@/hooks";
-import { FormSeasonModel, FormSeasonValidations, SeasonModel, StageModel } from "@/models";
+import { FormSeasonModel, FormSeasonValidations, SeasonModel, TypeProjectModel } from "@/models";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from "@mui/material"
 import { FormEvent, useCallback, useState } from "react";
 import { StageTable } from "../stage";
@@ -56,7 +56,7 @@ export const SeasonCreate = (props: createProps) => {
           price: parseInt(price),
           start,
           end,
-          stages: stages.map((e: StageModel) => e.id)
+          stages: stages.map((e: TypeProjectModel) => e.id)
         });
     } else {
       updateSeason(item.id,
@@ -65,7 +65,7 @@ export const SeasonCreate = (props: createProps) => {
           price: parseInt(price),
           start,
           end,
-          stages: stages.map((e: StageModel) => e.id)
+          stages: stages.map((e: TypeProjectModel) => e.id)
         });
     }
     handleClose();
@@ -86,22 +86,22 @@ export const SeasonCreate = (props: createProps) => {
           <StageTable
             stateSelect={true}
             itemSelect={(v) => {
-              if (stages.map((e: StageModel) => e.id).includes(v.id)) {
-                onValueChange('stages', [...stages.filter((e: StageModel) => e.id != v.id)])
+              if (stages.map((e: TypeProjectModel) => e.id).includes(v.id)) {
+                onValueChange('stages', [...stages.filter((e: TypeProjectModel) => e.id != v.id)])
               } else {
                 onValueChange('stages', [...stages, v])
               }
             }}
-            items={stages.map((e: StageModel) => (e.id))}
+            items={stages.map((e: TypeProjectModel) => (e.id))}
           />
         </ModalSelectComponent>
       }
       <Dialog open={open} onClose={handleClose} >
-        <DialogTitle>{item == null ? 'Nuevo Rol' : `${item.name}`}</DialogTitle>
+        <DialogTitle>{item == null ? 'Nueva temporada' : `${item.name}`}</DialogTitle>
         <form onSubmit={sendSubmit}>
           <DialogContent sx={{ display: 'flex' }}>
             <Grid container>
-              <Grid item xs={12} sm={6} sx={{ padding: '5px' }}>
+              <Grid item xs={12} sm={9} sx={{ padding: '5px' }}>
                 <ComponentInput
                   type="text"
                   label="Nombre"
@@ -112,7 +112,7 @@ export const SeasonCreate = (props: createProps) => {
                   helperText={formSubmitted ? nameValid : ''}
                 />
               </Grid>
-              <Grid item xs={12} sm={6} sx={{ padding: '5px' }}>
+              <Grid item xs={12} sm={3} sx={{ padding: '5px' }}>
                 <ComponentInput
                   type="text"
                   label="Precio"
@@ -123,7 +123,7 @@ export const SeasonCreate = (props: createProps) => {
                   helperText={formSubmitted ? priceValid : ''}
                 />
               </Grid>
-              <Grid item xs={12} sm={4} sx={{ padding: '5px' }}>
+              <Grid item xs={12} sm={6} sx={{ padding: '5px' }}>
                 <ComponentDate
                   title="Fecha inicio"
                   date={start}
@@ -132,7 +132,7 @@ export const SeasonCreate = (props: createProps) => {
                   helperText={formSubmitted ? startValid : ''}
                 />
               </Grid>
-              <Grid item xs={12} sm={4} sx={{ padding: '5px' }}>
+              <Grid item xs={12} sm={6} sx={{ padding: '5px' }}>
                 <ComponentDate
                   title="Fecha fin"
                   date={end}
@@ -148,8 +148,8 @@ export const SeasonCreate = (props: createProps) => {
                   onPressed={() => handleModal(true)}
                   error={!!stagesValid && formSubmitted}
                   helperText={formSubmitted ? stagesValid : ''}
-                  items={stages.map((e: StageModel) => ({ id: e.id, name: e.name }))}
-                  onRemove={(v) => onValueChange('stages', [...stages.filter((e: StageModel) => e.id != v)])}
+                  items={stages.map((e: TypeProjectModel) => ({ id: e.id, name: e.name }))}
+                  onRemove={(v) => onValueChange('stages', [...stages.filter((e: TypeProjectModel) => e.id != v)])}
                 />
               </Grid>
             </Grid>

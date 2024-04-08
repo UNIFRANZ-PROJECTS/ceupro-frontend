@@ -1,1 +1,2 @@
-export * from './TypeProjectView';
+export * from './TypeProjectTable';
+export * from './TypeProjectCreate';

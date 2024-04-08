@@ -9,8 +9,8 @@ export interface ParallelModel {
 
 export interface FormParallelModel {
   name: string;
-  teacher: TeacherModel;
-  subject: SubjectModel;
+  teacher: TeacherModel|null;
+  subject: SubjectModel|null;
 }
 
 export interface FormParallelValidations {

@@ -10,7 +10,6 @@ interface buttonProps {
     height?: any,
     disable?: boolean,
     variant?: any,
-
     maxWidth?: any,
     minWidth?: any,
 }

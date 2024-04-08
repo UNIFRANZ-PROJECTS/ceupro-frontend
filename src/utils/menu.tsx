@@ -1,101 +1,131 @@
-import { Assessment, Group, Home } from "@mui/icons-material"
+import { Assessment, Group, Home } from '@mui/icons-material';
 
 export const menu = () => {
   return [
     {
-      path: "/dashboardView",
-      title: "Inicio",
-      icon: <Home />
+      path: '/dashboardView',
+      title: 'Dashboard',
+      icon: <Home />,
     },
     {
-      title: "Gestión de Inventario",
-      permission: "show-rent",
+      title: 'Gestion de proyectos',
+      permission: 'show-rent',
       group: [
         {
-          path: "/productsView",
-          title: "Productos",
+          path: '/seasonView',
+          title: 'Temporada',
           icon: <Home />,
-          permission: "show-halls"
+          permission: 'show-halls',
         },
         {
-          path: "/movementsView",
-          title: "Movimientos",
+          path: '/requirementView',
+          title: 'Requisitos en avance',
           icon: <Home />,
-          permission: "show-halls"
+          permission: 'show-halls',
         },
         {
-          path: "/orderView",
-          title: "Ordenes y Ventas",
+          path: '/inscriptionView',
+          title: 'Inscripciones',
           icon: <Home />,
-          permission: "show-halls"
+          permission: 'show-halls',
         },
         {
-          path: "/salesView",
-          title: "Punto de venta",
+          path: '/projectView',
+          title: 'Proyectos',
           icon: <Home />,
-          permission: "show-halls"
+          permission: 'show-halls',
         },
-      ]
+      ],
+    },
+    // {
+    //   title: 'Capacitaciones',
+    //   permission: 'show-rent',
+    //   group: [
+    //     {
+    //       path: '/productsView',
+    //       title: 'Talleres',
+    //       icon: <Home />,
+    //       permission: 'show-halls',
+    //     },
+    //     {
+    //       path: '/salesView',
+    //       title: 'Cursos',
+    //       icon: <Home />,
+    //       permission: 'show-halls',
+    //     },
+    //     {
+    //       path: '/salesView',
+    //       title: 'Charlas',
+    //       icon: <Home />,
+    //       permission: 'show-halls',
+    //     },
+    //     {
+    //       path: '/salesView',
+    //       title: 'Inscripciones',
+    //       icon: <Home />,
+    //       permission: 'show-halls',
+    //     },
+    //   ],
+    // },
+    {
+      title: 'Administradores',
+      permission: 'show-rent',
+      group: [
+        {
+          path: '/staffView',
+          title: 'Staff',
+          icon: <Group />,
+          permission: 'show-halls',
+        },
+        {
+          path: '/roleView',
+          title: 'Roles',
+          icon: <Group />,
+          permission: 'show-halls',
+        },
+        {
+          path: '/PermissionView',
+          title: 'Permisos',
+          icon: <Group />,
+          permission: 'show-halls',
+        },
+      ],
     },
     {
-      title: "Gestión de Clientes",
-      permission: "show-rent",
+      title: 'Usuarios',
+      permission: 'show-rent',
       group: [
         {
-          path: "/customersView",
-          title: "Clientes",
+          path: '/teacherView',
+          title: 'Docentes',
           icon: <Group />,
-          permission: "show-halls"
+          permission: 'show-halls',
         },
         {
-          path: "/customerCreditsView",
-          title: "Creditos",
+          path: '/parallelView',
+          title: 'Paralelos',
           icon: <Group />,
-          permission: "show-halls"
+          permission: 'show-halls',
         },
-      ]
+        {
+          path: '/studentView',
+          title: 'Estudiantes',
+          icon: <Group />,
+          permission: 'show-halls',
+        },
+      ],
     },
     {
-      title: "Gestión de Usuarios",
-      permission: "show-rent",
+      title: 'Reportes',
+      permission: 'show-rent',
       group: [
         {
-          path: "/usersView",
-          title: "Usuarios",
-          icon: <Group />,
-          permission: "show-halls"
-        },
-        {
-          path: "/BranchOfficesView",
-          title: "Sucursales",
-          icon: <Home />,
-          permission: "show-halls"
-        },
-        {
-          path: "/rolesView",
-          title: "Roles",
-          icon: <Group />,
-          permission: "show-halls"
-        },
-        {
-          path: "/permissionsView",
-          title: "Permisos",
-          icon: <Group />,
-          permission: "show-halls"
-        },
-      ]
-    },
-    {
-      title: "Reportes",
-      permission: "show-rent",
-      group: [
-        {
-          path: "/ReportView",
-          title: "Reportes",
+          path: '/ReportView',
+          title: 'Reportes',
           icon: <Assessment />,
-          permission: "show-halls"
-        }
-      ]
+          permission: 'show-halls',
+        },
+      ],
     },
-  ]
-}
+  ];
+};

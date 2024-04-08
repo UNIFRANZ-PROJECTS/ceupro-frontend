@@ -1,1 +1,2 @@
-export * from './SubjectView';
+export * from './SubjectTable';
+export * from './SubjectCreate';

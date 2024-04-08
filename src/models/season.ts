@@ -1,4 +1,4 @@
-import { StageModel } from ".";
+import { TypeProjectModel } from ".";
 
 export interface SeasonModel {
     id: number;
@@ -6,7 +6,8 @@ export interface SeasonModel {
     price: number;
     start: Date;
     end: Date;
-    stages:StageModel[]
+    enableState: boolean;
+    stages:TypeProjectModel[]
 }
 
 export interface FormSeasonModel {
@@ -14,7 +15,7 @@ export interface FormSeasonModel {
     price: number;
     start: Date|null;
     end: Date|null;
-    stages: StageModel[];
+    stages: TypeProjectModel[];
 }
 
 export interface FormSeasonValidations {
@@ -22,5 +23,5 @@ export interface FormSeasonValidations {
     price: [(value: number) => boolean, string];
     start: [(value: Date) => boolean, string];
     end: [(value: Date) => boolean, string];
-    stages: [(value: StageModel[]) => boolean, string];
+    stages: [(value: TypeProjectModel[]) => boolean, string];
 }

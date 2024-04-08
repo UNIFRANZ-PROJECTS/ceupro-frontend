@@ -1,1 +1,2 @@
-export * from './CategoryView';
+export * from './CategoryTable';
+export * from './CategoryCreate';

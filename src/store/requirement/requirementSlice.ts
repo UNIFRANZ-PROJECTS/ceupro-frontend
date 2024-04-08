@@ -9,16 +9,16 @@ export const requirementSlice = createSlice({
   },
   reducers: {
     setRequirements: (state, action) => {
-        state.requirements = action.payload.categories;
+        state.requirements = action.payload.requirements;
     },
     setAddRequirement: (state, action) => {
-        state.requirements = [...state.requirements, action.payload.category];
+        state.requirements = [...state.requirements, action.payload.requirement];
     },
     setUpdateRequirement: (state, action) => {
         state.requirements = [...state.requirements.map((e) => {
-            if (e.id === action.payload.category.id) {
+            if (e.id === action.payload.requirement.id) {
                 return {
-                    ...action.payload.category
+                    ...action.payload.requirement
                 }
             }
             return e

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { useLocation } from 'react-router-dom';
-import { SideNav } from '.';
+import { SideNav, TopNav } from '.';
 
 const SIDE_NAV_WIDTH = 220;
 
@@ -24,11 +24,14 @@ const LayoutContainer = styled('div')({
 export const Layout = ({ children }: { children: any }) => {
   const { pathname } = useLocation();
   const [openNav, setOpenNav] = useState(false);
+  const [settingsOpenNav, setSettingsOpenNav] = useState(false);
   const handlePathnameChange = useCallback(
     () => {
+
+      if (settingsOpenNav) setSettingsOpenNav(false)
       if (openNav) setOpenNav(false)
     },
-    [openNav]
+    [openNav, settingsOpenNav]
   );
 
   useEffect(
@@ -40,6 +43,9 @@ export const Layout = ({ children }: { children: any }) => {
 
   return (
     <>
+      <TopNav
+        onNavOpen={() => setOpenNav(true)}
+      />
       <SideNav
         onClose={() => setOpenNav(false)}
         open={openNav}
