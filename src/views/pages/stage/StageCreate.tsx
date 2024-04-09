@@ -6,7 +6,7 @@ import {
 } from '@/components';
 import { useForm, useStageStore } from '@/hooks';
 import {
-  TypeProjectModel,
+  StageModel,
   FormStageModel,
   FormStageValidations,
   RequirementModel,
@@ -25,7 +25,7 @@ import { RequirementTable } from '../requirement';
 interface createProps {
   open: boolean;
   handleClose: () => void;
-  item: TypeProjectModel | null;
+  item: StageModel | null;
 }
 
 const formFields: FormStageModel = {
@@ -66,29 +66,31 @@ export const StageCreate = (props: createProps) => {
     requirementsValid,
   } = useForm(item ?? formFields, formValidations);
 
-  const sendSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const sendSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setFormSubmitted(true);
     if (!isFormValid) return;
-    if (item == null) {
-      createStage({
-        name: name.trim(),
-        start,
-        end,
-        weighing: parseInt(weighing),
-        requirements: requirements.map((e: RequirementModel) => e.id),
-      });
-    } else {
-      updateStage(item.id, {
-        name: name.trim(),
-        start,
-        end,
-        weighing: parseInt(weighing),
-        requirements: requirements.map((e: RequirementModel) => e.id),
-      });
-    }
-    handleClose();
-    onResetForm();
+    try {
+      if (item == null) {
+        await createStage({
+          name: name.trim(),
+          start,
+          end,
+          weighing: parseInt(weighing),
+          requirements: requirements.map((e: RequirementModel) => e.id),
+        });
+      } else {
+        await updateStage(item.id, {
+          name: name.trim(),
+          start,
+          end,
+          weighing: parseInt(weighing),
+          requirements: requirements.map((e: RequirementModel) => e.id),
+        });
+      }
+      handleClose();
+      onResetForm();
+    } catch (_) {}
   };
 
   const [modal, setModal] = useState(false);
