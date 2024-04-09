@@ -18,7 +18,7 @@ export const useProjectStore = () => {
     try {
       const { data } = await coffeApi.get('/project');
       console.log(data);
-      dispatch(setCategories({ Projects: data.Projects }));
+      dispatch(setCategories({ projects: data.projects }));
     } catch (error) {
       handleError(error);
     }
@@ -27,7 +27,7 @@ export const useProjectStore = () => {
     try {
       const { data } = await coffeApi.post('/project/', body);
       console.log(data);
-      dispatch(setAddProject({ ionscription: data }));
+      dispatch(setAddProject({ project: data }));
       showSuccess('Proyecto creado correctamente');
     } catch (error) {
       handleError(error);
@@ -37,7 +37,7 @@ export const useProjectStore = () => {
     try {
       const { data } = await coffeApi.put(`/project/${id}`, body);
       console.log(data);
-      dispatch(setUpdateProject({ ionscription: data }));
+      dispatch(setUpdateProject({ project: data }));
       showSuccess('Proyecto editado correctamente');
     } catch (error) {
       handleError(error);

@@ -17,13 +17,13 @@ export const useCategoryStore = () => {
   const getCategories = async () => {
     const { data } = await coffeApi.get('/category');
     console.log(data);
-    dispatch(setCategories({ Categorys: data.Categorys }));
+    dispatch(setCategories({ categories: data.categories }));
   };
   const createCategory = async (body: object) => {
     try {
       const { data } = await coffeApi.post('/category/', body);
       console.log(data);
-      dispatch(setAddCategory({ ionscription: data }));
+      dispatch(setAddCategory({ category: data }));
       showSuccess('Categoria creada correctamente');
     } catch (error) {
       handleError(error);
@@ -33,7 +33,7 @@ export const useCategoryStore = () => {
     try {
       const { data } = await coffeApi.put(`/category/${id}`, body);
       console.log(data);
-      dispatch(setUpdateCategory({ ionscription: data }));
+      dispatch(setUpdateCategory({ category: data }));
       showSuccess('Categoria editada correctamente');
     } catch (error) {
       handleError(error);
