@@ -1,8 +1,19 @@
-import { ComponentInput } from "@/components"
-import { useForm, useRequirementStore } from "@/hooks";
-import { FormRequirementModel, FormRequirementValidations,  RequirementModel } from "@/models";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from "@mui/material"
-import { FormEvent, useState } from "react";
+import { ComponentInput } from '@/components';
+import { useForm, useRequirementStore } from '@/hooks';
+import {
+  FormRequirementModel,
+  FormRequirementValidations,
+  RequirementModel,
+} from '@/models';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+} from '@mui/material';
+import { FormEvent, useState } from 'react';
 
 interface createProps {
   open: boolean;
@@ -13,51 +24,51 @@ interface createProps {
 const formFields: FormRequirementModel = {
   name: '',
   description: '',
-}
+};
 
 const formValidations: FormRequirementValidations = {
   name: [(value) => value.length >= 1, 'Debe ingresar el nombre'],
   description: [(value) => value.length >= 1, 'Debe ingresar la descripción'],
-
-}
+};
 export const RequirementCreate = (props: createProps) => {
+  const { open, handleClose, item } = props;
   const {
-    open,
-    handleClose,
-    item,
-  } = props;
-  const {
-    name, description,
-    onInputChange, isFormValid, onResetForm,
-    nameValid, descriptionValid} = useForm(item ?? formFields, formValidations);
+    name,
+    description,
+    onInputChange,
+    isFormValid,
+    onResetForm,
+    nameValid,
+    descriptionValid,
+  } = useForm(item ?? formFields, formValidations);
   const { createRequirement, updateRequirement } = useRequirementStore();
   const [formSubmitted, setFormSubmitted] = useState(false);
 
-  const sendSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const sendSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setFormSubmitted(true);
     if (!isFormValid) return;
     if (item == null) {
-      createRequirement(
-        {
-          name: name.trim(),
-          description: description.trim(),
-        });
+      await createRequirement({
+        name: name.trim(),
+        description: description.trim(),
+      });
     } else {
-      updateRequirement(item.id,
-        {
-          name: name.trim(),
-          description: description.trim(),
-        });
+      await updateRequirement(item.id, {
+        name: name.trim(),
+        description: description.trim(),
+      });
     }
     handleClose();
     onResetForm();
-  }
+  };
 
   return (
     <>
-      <Dialog open={open} onClose={handleClose} style={{zIndex:10000}} >
-        <DialogTitle>{item == null ? 'Nuevo Requisito' : `${item.name}`}</DialogTitle>
+      <Dialog open={open} onClose={handleClose} style={{ zIndex: 10000 }}>
+        <DialogTitle>
+          {item == null ? 'Nuevo Requisito' : `${item.name}`}
+        </DialogTitle>
         <form onSubmit={sendSubmit}>
           <DialogContent sx={{ display: 'flex' }}>
             <Grid container>
@@ -86,16 +97,18 @@ export const RequirementCreate = (props: createProps) => {
             </Grid>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => {
-              onResetForm();
-              handleClose()
-            }}>Cancelar</Button>
-            <Button type="submit">
-              {item == null ? 'CREAR' : 'EDITAR'}
+            <Button
+              onClick={() => {
+                onResetForm();
+                handleClose();
+              }}
+            >
+              Cancelar
             </Button>
+            <Button type="submit">{item == null ? 'CREAR' : 'EDITAR'}</Button>
           </DialogActions>
         </form>
       </Dialog>
     </>
-  )
-}
+  );
+};

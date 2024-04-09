@@ -6,30 +6,31 @@ import {
   setUpdateSubject,
   setDeleteSubject,
 } from '@/store';
-import Swal from 'sweetalert2';
+import { useAlertStore, useErrorStore } from '.';
 
 export const useSubjectStore = () => {
   const { subjects } = useSelector((state: any) => state.subjects);
   const dispatch = useDispatch();
+  const { handleError } = useErrorStore();
+  const { showSuccess, showWarning, showError } = useAlertStore();
 
   const getSubjects = async () => {
-    const { data } = await coffeApi.get('/subject');
-    console.log(data);
-    dispatch(setCategories({ Subjects: data.Subjects }));
+    try {
+      const { data } = await coffeApi.get('/subject');
+      console.log(data);
+      dispatch(setCategories({ Subjects: data.Subjects }));
+    } catch (error) {
+      handleError(error);
+    }
   };
   const createSubject = async (body: object) => {
     try {
       const { data } = await coffeApi.post('/subject/', body);
       console.log(data);
       dispatch(setAddSubject({ ionscription: data }));
-      Swal.fire('Materia creada correctamente', '', 'success');
-    } catch (error: any) {
-      console.log(error);
-      Swal.fire(
-        'Oops ocurrio algo',
-        error.response.data.errors[0].msg,
-        'error'
-      );
+      showSuccess('Materia creada correctamente');
+    } catch (error) {
+      handleError(error);
     }
   };
   const updateSubject = async (id: number, body: object) => {
@@ -37,51 +38,23 @@ export const useSubjectStore = () => {
       const { data } = await coffeApi.put(`/subject/${id}`, body);
       console.log(data);
       dispatch(setUpdateSubject({ ionscription: data }));
-      Swal.fire('Materia editada correctamente', '', 'success');
-    } catch (error: any) {
-      Swal.fire(
-        'Oops ocurrio algo',
-        error.response.data.errors[0].msg,
-        'error'
-      );
+      showSuccess('Materia editada correctamente');
+    } catch (error) {
+      handleError(error);
     }
   };
   const deleteSubject = async (id: number) => {
     try {
-      Swal.fire({
-        title: '¿Estas seguro?',
-        text: '¡No podrás revertir esto!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: '¡Sí, bórralo!',
-        cancelButtonText: '¡No, cancelar!',
-      })
-        .then(async (result) => {
-          if (result.isConfirmed) {
-            const { data } = await coffeApi.delete(`/subject/${id}`);
-            console.log(data);
-            dispatch(setDeleteSubject({ id }));
-            Swal.fire('Eliminado', 'Materia eliminado correctamente', 'success');
-          } else {
-            Swal.fire('Cancelado', 'La materia esta a salvo :)', 'error');
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          Swal.fire(
-            'Oops ocurrio algo',
-            error.response.data.errors[0].msg,
-            'error'
-          );
-        });
-    } catch (error: any) {
-      Swal.fire(
-        'Oops ocurrio algo',
-        error.response.data.errors[0].msg,
-        'error'
-      );
+      const result = await showWarning();
+      if (result.isConfirmed) {
+        await coffeApi.delete(`/subject/${id}`);
+        dispatch(setDeleteSubject({ id }));
+        showSuccess('Materia eliminado correctamente');
+      } else {
+        showError('Cancelado', 'La Materia esta a salvo :)');
+      }
+    } catch (error) {
+      handleError(error);
     }
   };
 

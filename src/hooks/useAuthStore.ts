@@ -1,16 +1,17 @@
-import { useDispatch, useSelector } from "react-redux";
-import Swal from "sweetalert2";
-import { coffeApi } from "@/services";
-import { onLogin, onLogout, setRoleUser } from "@/store";
+import { useDispatch, useSelector } from 'react-redux';
+import { coffeApi } from '@/services';
+import { onLogin, onLogout, setRoleUser } from '@/store';
+import { useErrorStore } from '.';
 
 export const useAuthStore = () => {
   const { status, user } = useSelector((state: any) => state.auth);
   const dispatch = useDispatch();
+  const { handleError } = useErrorStore();
 
   const startLogin = async (body: object) => {
     try {
-      console.log('INICIANDO SESION')
-      console.log(body)
+      console.log('INICIANDO SESION');
+      console.log(body);
       const { data } = await coffeApi.post('/auth', body);
       console.log(data);
       const user = `${data.user.name} ${data.user.lastName}`;
@@ -19,13 +20,12 @@ export const useAuthStore = () => {
       localStorage.setItem('user', user);
       localStorage.setItem('role', JSON.stringify(role));
       dispatch(onLogin(user));
-      dispatch(setRoleUser({ role }))
-    } catch (error: any) {
+      dispatch(setRoleUser({ role }));
+    } catch (error) {
       dispatch(onLogout());
-      Swal.fire('Oops ocurrio algo', error.response.data.errors[0].msg, 'error');
+      handleError(error);
     }
-  }
-
+  };
   const checkAuthToken = async () => {
     const token = localStorage.getItem('token');
 
@@ -37,14 +37,7 @@ export const useAuthStore = () => {
       localStorage.clear();
       dispatch(onLogout());
     }
-  }
-
-  const startLogout = () => {
-    localStorage.clear();
-    dispatch(onLogout());
-  }
-
-
+  };
 
   return {
     //* Propiedades
@@ -54,7 +47,16 @@ export const useAuthStore = () => {
     //* Métodos
     startLogin,
     checkAuthToken,
-    startLogout,
-  }
+  };
+};
 
-}
+export const useLogoutStore = () => {
+  const dispatch = useDispatch();
+  const startLogout = () => {
+    localStorage.clear();
+    dispatch(onLogout());
+  };
+  return {
+    startLogout,
+  };
+};

@@ -6,11 +6,13 @@ import {
   setUpdateCategory,
   setDeleteCategory,
 } from '@/store';
-import Swal from 'sweetalert2';
+import { useAlertStore, useErrorStore } from '.';
 
 export const useCategoryStore = () => {
   const { categories } = useSelector((state: any) => state.categories);
   const dispatch = useDispatch();
+  const { handleError } = useErrorStore();
+  const { showSuccess, showWarning, showError } = useAlertStore();
 
   const getCategories = async () => {
     const { data } = await coffeApi.get('/category');
@@ -22,14 +24,9 @@ export const useCategoryStore = () => {
       const { data } = await coffeApi.post('/category/', body);
       console.log(data);
       dispatch(setAddCategory({ ionscription: data }));
-      Swal.fire('Categoria creada correctamente', '', 'success');
-    } catch (error: any) {
-      console.log(error);
-      Swal.fire(
-        'Oops ocurrio algo',
-        error.response.data.errors[0].msg,
-        'error'
-      );
+      showSuccess('Categoria creada correctamente');
+    } catch (error) {
+      handleError(error);
     }
   };
   const updateCategory = async (id: number, body: object) => {
@@ -37,51 +34,23 @@ export const useCategoryStore = () => {
       const { data } = await coffeApi.put(`/category/${id}`, body);
       console.log(data);
       dispatch(setUpdateCategory({ ionscription: data }));
-      Swal.fire('Categoria editada correctamente', '', 'success');
-    } catch (error: any) {
-      Swal.fire(
-        'Oops ocurrio algo',
-        error.response.data.errors[0].msg,
-        'error'
-      );
+      showSuccess('Categoria editada correctamente');
+    } catch (error) {
+      handleError(error);
     }
   };
   const deleteCategory = async (id: number) => {
     try {
-      Swal.fire({
-        title: '¿Estas seguro?',
-        text: '¡No podrás revertir esto!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: '¡Sí, bórralo!',
-        cancelButtonText: '¡No, cancelar!',
-      })
-        .then(async (result) => {
-          if (result.isConfirmed) {
-            const { data } = await coffeApi.delete(`/category/${id}`);
-            console.log(data);
-            dispatch(setDeleteCategory({ id }));
-            Swal.fire('Eliminado', 'Categoria eliminado correctamente', 'success');
-          } else {
-            Swal.fire('Cancelado', 'La categoria esta a salvo :)', 'error');
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          Swal.fire(
-            'Oops ocurrio algo',
-            error.response.data.errors[0].msg,
-            'error'
-          );
-        });
-    } catch (error: any) {
-      Swal.fire(
-        'Oops ocurrio algo',
-        error.response.data.errors[0].msg,
-        'error'
-      );
+      const result = await showWarning();
+      if (result.isConfirmed) {
+        await coffeApi.delete(`/category/${id}`);
+        dispatch(setDeleteCategory({ id }));
+        showSuccess('Categoria eliminado correctamente');
+      } else {
+        showError('Cancelado', 'La categoria esta a salvo :)');
+      }
+    } catch (error) {
+      handleError(error);
     }
   };
 

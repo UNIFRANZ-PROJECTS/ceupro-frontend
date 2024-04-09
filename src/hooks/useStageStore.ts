@@ -6,14 +6,13 @@ import {
   setUpdateStage,
   setDeleteStage,
 } from '@/store';
-import Swal from 'sweetalert2';
-import { AxiosError } from 'axios';
-import { useAuthStore } from '.';
+import { useErrorStore, useAlertStore } from '.';
 
 export const useStageStore = () => {
   const { stages } = useSelector((state: any) => state.stages);
   const dispatch = useDispatch();
-  const { startLogout } = useAuthStore();
+  const { handleError } = useErrorStore();
+  const { showSuccess, showWarning, showError } = useAlertStore();
 
   const getStages = async () => {
     try {
@@ -21,85 +20,44 @@ export const useStageStore = () => {
       console.log(data);
       dispatch(setStages({ stages: data.stages }));
     } catch (error) {
-      console.log(error);
-      if (error instanceof AxiosError && error.response?.status == 401) {
-        return startLogout();
-      } else {
-        console.log(error);
-        throw error;
-      }
+      handleError(error);
     }
   };
+
   const createStage = async (body: object) => {
     try {
       const { data } = await coffeApi.post('/stage/', body);
       console.log(data);
       dispatch(setAddStage({ stage: data }));
-      Swal.fire('Etapa creada correctamente', '', 'success');
+      showSuccess('Etapa creada correctamente');
     } catch (error) {
-      if (error instanceof AxiosError) {
-        throw Swal.fire(
-          'Oops ocurrio algo',
-          error.response?.data.error,
-          'error'
-        );
-      } else {
-        console.log(error);
-        throw error;
-      }
+      handleError(error);
     }
   };
+
   const updateStage = async (id: number, body: object) => {
     try {
       const { data } = await coffeApi.put(`/stage/${id}`, body);
       console.log(data);
       dispatch(setUpdateStage({ stage: data }));
-      Swal.fire('Etapa editada correctamente', '', 'success');
+      showSuccess('Etapa editada correctamente');
     } catch (error) {
-      if (error instanceof AxiosError) {
-        throw Swal.fire(
-          'Oops ocurrio algo',
-          error.response?.data.error,
-          'error'
-        );
-      } else {
-        console.log(error);
-        throw error;
-      }
+      handleError(error);
     }
   };
+
   const deleteStage = async (id: number) => {
     try {
-      Swal.fire({
-        title: '¿Estas seguro?',
-        text: '¡No podrás revertir esto!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: '¡Sí, bórralo!',
-        cancelButtonText: '¡No, cancelar!',
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-          const { data } = await coffeApi.delete(`/stage/${id}`);
-          console.log(data);
-          dispatch(setDeleteStage({ id }));
-          Swal.fire('Eliminado', 'Etapa eliminado correctamente', 'success');
-        } else {
-          Swal.fire('Cancelado', 'La etapa esta a salvo :)', 'error');
-        }
-      });
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        throw Swal.fire(
-          'Oops ocurrio algo',
-          error.response?.data.error,
-          'error'
-        );
+      const result = await showWarning();
+      if (result.isConfirmed) {
+        await coffeApi.delete(`/stage/${id}`);
+        dispatch(setDeleteStage({ id }));
+        showSuccess('Etapa eliminado correctamente');
       } else {
-        console.log(error);
-        throw error;
+        showError('Cancelado', 'La etapa esta a salvo :)');
       }
+    } catch (error) {
+      handleError(error);
     }
   };
 
