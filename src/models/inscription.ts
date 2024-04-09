@@ -14,13 +14,11 @@ export interface InscriptionModel {
 export interface FormInscriptionModel {
   amountDelivered: number;
   student:StudentModel|null;
-  season:SeasonModel|null;
 }
 
 export interface FormInscriptionValidations {
   amountDelivered: [(value: number) => boolean, string];
   student: [(value: StudentModel) => boolean, string];
-  season: [(value: SeasonModel) => boolean, string];
 }
 
 

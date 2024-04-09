@@ -59,10 +59,8 @@ export const ProjectTable = (props: tableProps) => {
           <TableHead>
             <TableRow sx={{ backgroundColor: '#E2F6F0' }}>
               {stateSelect && <TableCell />}
-              <TableCell sx={{ fontWeight: 'bold' }}>Nombre</TableCell>
-              <TableCell sx={{ fontWeight: 'bold' }}>Precio</TableCell>
-              <TableCell sx={{ fontWeight: 'bold' }}>Inicio</TableCell>
-              <TableCell sx={{ fontWeight: 'bold' }}>Fin</TableCell>
+              <TableCell sx={{ fontWeight: 'bold' }}>Titulo</TableCell>
+              <TableCell sx={{ fontWeight: 'bold' }}>Temporada</TableCell>
               {!stateSelect && <TableCell sx={{ fontWeight: 'bold' }}>Acciones</TableCell>}
             </TableRow>
           </TableHead>

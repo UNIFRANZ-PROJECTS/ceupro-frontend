@@ -1,5 +1,5 @@
 import { ComponentInput } from '@/components';
-import { useCategoryStore, useForm } from '@/hooks';
+import { useForm, useSubjectStore } from '@/hooks';
 import {
   SubjectModel,
   FormSubjectModel,
@@ -23,35 +23,48 @@ interface createProps {
 
 const formFields: FormSubjectModel = {
   name: '',
+  code: '',
   semester: 0,
 };
 
 const formValidations: FormSubjectValidations = {
   name: [(value) => value.length >= 1, 'Debe ingresar el nombre'],
-  semester: [(value) => value != 0 , 'Debe ingresar el nombre'],
+  code: [(value) => value.length >= 1, 'Debe ingresar el código'],
+  semester: [(value) => value != 0, 'Debe ingresar el nombre'],
 };
 
 export const SubjectCreate = (props: createProps) => {
   const { open, handleClose, item } = props;
-  const { createCategory, updateCategory } = useCategoryStore();
+  const { createSubject, updateSubject } = useSubjectStore();
 
   const [formSubmitted, setFormSubmitted] = useState(false);
-  const { name, onInputChange, isFormValid, onResetForm, nameValid } = useForm(
-    item ?? formFields,
-    formValidations
-  );
+  const {
+    name,
+    code,
+    semester,
+    onInputChange,
+    isFormValid,
+    onResetForm,
+    nameValid,
+    codeValid,
+    semesterValid,
+  } = useForm(item ?? formFields, formValidations);
 
-  const sendSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const sendSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setFormSubmitted(true);
     if (!isFormValid) return;
     if (item == null) {
-      createCategory({
+      await createSubject({
         name: name.trim(),
+        code: code.trim(),
+        semester: parseInt(semester.trim()),
       });
     } else {
-      updateCategory(item.id, {
+      await updateSubject(item.id, {
         name: name.trim(),
+        code: code.trim(),
+        semester: parseInt(semester.trim()),
       });
     }
     handleClose();
@@ -62,7 +75,7 @@ export const SubjectCreate = (props: createProps) => {
     <>
       <Dialog open={open} onClose={handleClose} style={{ zIndex: 9998 }}>
         <DialogTitle>
-          {item == null ? 'Nueva Categoria' : `${item.name}`}
+          {item == null ? 'Nueva Materia' : `${item.name}`}
         </DialogTitle>
         <form onSubmit={sendSubmit}>
           <DialogContent sx={{ display: 'flex' }}>
@@ -76,6 +89,28 @@ export const SubjectCreate = (props: createProps) => {
                   onChange={onInputChange}
                   error={!!nameValid && formSubmitted}
                   helperText={formSubmitted ? nameValid : ''}
+                />
+              </Grid>
+              <Grid item xs={12} sm={9} sx={{ padding: '5px' }}>
+                <ComponentInput
+                  type="text"
+                  label="Código"
+                  name="code"
+                  value={code}
+                  onChange={onInputChange}
+                  error={!!codeValid && formSubmitted}
+                  helperText={formSubmitted ? codeValid : ''}
+                />
+              </Grid>
+              <Grid item xs={12} sm={9} sx={{ padding: '5px' }}>
+                <ComponentInput
+                  type="text"
+                  label="Semestre"
+                  name="semester"
+                  value={semester}
+                  onChange={onInputChange}
+                  error={!!semesterValid && formSubmitted}
+                  helperText={formSubmitted ? semesterValid : ''}
                 />
               </Grid>
             </Grid>

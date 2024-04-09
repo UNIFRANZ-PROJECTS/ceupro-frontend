@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { coffeApi } from '@/services';
 import {
-  setCategories,
   setAddParallel,
   setUpdateParallel,
   setDeleteParallel,
+  setParallels,
 } from '@/store';
 import { useAlertStore, useErrorStore } from '.';
 
@@ -18,7 +18,7 @@ export const useParallelStore = () => {
     try {
       const { data } = await coffeApi.get('/parallel');
       console.log(data);
-      dispatch(setCategories({ Parallels: data.Parallels }));
+      dispatch(setParallels({ parallels: data.parallels }));
     } catch (error) {
       handleError(error);
     }
@@ -27,7 +27,7 @@ export const useParallelStore = () => {
     try {
       const { data } = await coffeApi.post('/parallel/', body);
       console.log(data);
-      dispatch(setAddParallel({ ionscription: data }));
+      dispatch(setAddParallel({ parallel: data }));
       showSuccess('Paralelo creado correctamente');
     } catch (error) {
       handleError(error);
@@ -37,7 +37,7 @@ export const useParallelStore = () => {
     try {
       const { data } = await coffeApi.put(`/parallel/${id}`, body);
       console.log(data);
-      dispatch(setUpdateParallel({ ionscription: data }));
+      dispatch(setUpdateParallel({ parallel: data }));
       showSuccess('Paralelo editado correctamente');
     } catch (error) {
       handleError(error);

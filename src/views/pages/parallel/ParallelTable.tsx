@@ -1,10 +1,20 @@
-import { ComponentSearch, ComponentTablePagination } from "@/components";
+import { ComponentSearch, ComponentTablePagination } from '@/components';
 import { useParallelStore } from '@/hooks';
-import { ParallelModel } from "@/models";
-import { applyPagination } from "@/utils/applyPagination";
-import { DeleteOutline, EditOutlined } from "@mui/icons-material";
-import { Checkbox, IconButton, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import { useEffect, useState } from "react";
+import { ParallelModel } from '@/models';
+import { applyPagination } from '@/utils/applyPagination';
+import { DeleteOutline, EditOutlined } from '@mui/icons-material';
+import {
+  Checkbox,
+  IconButton,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from '@mui/material';
+import { useEffect, useState } from 'react';
 
 interface tableProps {
   handleEdit?: (season: ParallelModel) => void;
@@ -13,7 +23,6 @@ interface tableProps {
   itemSelect?: (season: ParallelModel) => void;
   items?: any[];
 }
-
 
 export const ParallelTable = (props: tableProps) => {
   const {
@@ -30,9 +39,8 @@ export const ParallelTable = (props: tableProps) => {
   const [customerList, setCustomerList] = useState<ParallelModel[]>([]);
   const [query, setQuery] = useState<string>('');
 
-
   useEffect(() => {
-    getParallels()
+    getParallels();
   }, []);
 
   useEffect(() => {
@@ -44,59 +52,55 @@ export const ParallelTable = (props: tableProps) => {
       page,
       rowsPerPage
     );
-    setCustomerList(newList)
-  }, [parallels, page, rowsPerPage, query])
-
+    setCustomerList(newList);
+  }, [parallels, page, rowsPerPage, query]);
 
   return (
     <Stack sx={{ paddingRight: '10px' }}>
-      <ComponentSearch
-        title="Buscar Temporada"
-        search={setQuery}
-      />
+      <ComponentSearch title="Buscar Paralelo" search={setQuery} />
       <TableContainer>
         <Table sx={{ minWidth: 350 }} size="small">
           <TableHead>
             <TableRow sx={{ backgroundColor: '#E2F6F0' }}>
               {stateSelect && <TableCell />}
               <TableCell sx={{ fontWeight: 'bold' }}>Nombre</TableCell>
-              <TableCell sx={{ fontWeight: 'bold' }}>Precio</TableCell>
-              <TableCell sx={{ fontWeight: 'bold' }}>Inicio</TableCell>
-              <TableCell sx={{ fontWeight: 'bold' }}>Fin</TableCell>
-              {!stateSelect && <TableCell sx={{ fontWeight: 'bold' }}>Acciones</TableCell>}
+              <TableCell sx={{ fontWeight: 'bold' }}>Materia</TableCell>
+              <TableCell sx={{ fontWeight: 'bold' }}>Semestre</TableCell>
+              <TableCell sx={{ fontWeight: 'bold' }}>Docente</TableCell>
+              {!stateSelect && (
+                <TableCell sx={{ fontWeight: 'bold' }}>Acciones</TableCell>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
             {customerList.map((parallel: ParallelModel) => {
               const isSelected = items.includes(parallel.id);
               return (
-                <TableRow key={parallel.id} >
-                  {
-                    stateSelect && <TableCell padding="checkbox">
+                <TableRow key={parallel.id}>
+                  {stateSelect && (
+                    <TableCell padding="checkbox">
                       <Checkbox
                         checked={isSelected}
                         onChange={() => itemSelect!(parallel)}
                       />
                     </TableCell>
-                  }
+                  )}
                   <TableCell>{parallel.name}</TableCell>
-                  <TableCell>{parallel.teacher.user.name }</TableCell>
-                  {
-                    !stateSelect && <TableCell align="right">
-                      <Stack
-                        alignItems="center"
-                        direction="row"
-                        spacing={2}
-                      >
-                        <IconButton onClick={() => handleEdit!(parallel)} >
+                  <TableCell>{parallel.subject.name}</TableCell>
+                  <TableCell>{parallel.subject.semester}</TableCell>
+                  <TableCell>{parallel.teacher.user.name}</TableCell>
+                  {!stateSelect && (
+                    <TableCell align="right">
+                      <Stack alignItems="center" direction="row" spacing={2}>
+                        <IconButton onClick={() => handleEdit!(parallel)}>
                           <EditOutlined color="info" />
                         </IconButton>
-                        <IconButton onClick={() => deleteParallel(parallel.id)} >
+                        <IconButton onClick={() => deleteParallel(parallel.id)}>
                           <DeleteOutline color="error" />
                         </IconButton>
                       </Stack>
                     </TableCell>
-                  }
+                  )}
                 </TableRow>
               );
             })}
@@ -112,4 +116,4 @@ export const ParallelTable = (props: tableProps) => {
       />
     </Stack>
   );
-}
+};

@@ -14,7 +14,7 @@ interface tableProps {
   stateSelect?: boolean;
 }
 
-export const CategoryTable = (props: tableProps) => {
+export const TypeProjectTable = (props: tableProps) => {
   const {
     itemSelect,
     limitInit = 10,

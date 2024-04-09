@@ -1,4 +1,8 @@
-import { ComponentInput } from '@/components';
+import {
+  ComponentInput,
+  ComponentSelect,
+  ModalSelectComponent,
+} from '@/components';
 import { useForm, useInscriptionStore } from '@/hooks';
 import {
   FormInscriptionModel,
@@ -13,7 +17,8 @@ import {
   DialogTitle,
   Grid,
 } from '@mui/material';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useCallback, useState } from 'react';
+import { StudentTable } from '../student';
 
 interface createProps {
   open: boolean;
@@ -23,30 +28,25 @@ interface createProps {
 
 const formFields: FormInscriptionModel = {
   amountDelivered: 0,
-  student:null,
-  season:null,
+  student: null,
 };
 
 const formValidations: FormInscriptionValidations = {
   amountDelivered: [(value) => value != 0, 'Debe ingresar el monto recibido'],
   student: [(value) => value != null, 'Debe ingresar el estudiante'],
-  season: [(value) => value != null, 'Debe ingresar la temporada'],
 };
 
 export const InscriptionCreate = (props: createProps) => {
   const { open, handleClose, item } = props;
   const {
-    code,
-    name,
-    lastName,
-    email,
+    amountDelivered,
+    student,
     onInputChange,
     isFormValid,
+    onValueChange,
     onResetForm,
-    codeValid,
-    nameValid,
-    lastNameValid,
-    emailValid,
+    amountDeliveredValid,
+    studentValid,
   } = useForm(item ?? formFields, formValidations);
   const { createInscription, updateInscription } = useInscriptionStore();
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -57,25 +57,45 @@ export const InscriptionCreate = (props: createProps) => {
     if (!isFormValid) return;
     if (item == null) {
       createInscription({
-        code: code.trim(),
-        name: name.trim(),
-        lastName: lastName.trim(),
-        email: email.trim(),
+        amountDelivered: parseFloat(amountDelivered.trim()),
+        studentId: student.id,
       });
     } else {
       updateInscription(item.id, {
-        code: code.trim(),
-        name: name.trim(),
-        lastName: lastName.trim(),
-        email: email.trim(),
+        amountDelivered: parseFloat(amountDelivered.trim()),
+        studentId: student.id,
       });
     }
     handleClose();
     onResetForm();
   };
-
+  const [modalStudent, setModalStudent] = useState(false);
+  const handleModalStudent = useCallback((value: boolean) => {
+    setModalStudent(value);
+  }, []);
   return (
     <>
+      {modalStudent && (
+        <ModalSelectComponent
+          stateSelect={true}
+          stateMultiple={false}
+          title="Estudiantes:"
+          opendrawer={modalStudent}
+          handleDrawer={handleModalStudent}
+        >
+          <StudentTable
+            stateSelect={true}
+            limitInit={5}
+            itemSelect={(v) => {
+              if (student == null || student.id != v.id) {
+                onValueChange('student', v);
+                handleModalStudent(false);
+              }
+            }}
+            items={student == null ? [] : [student.id]}
+          />
+        </ModalSelectComponent>
+      )}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>
           {item == null ? 'Nueva Inscripción' : `${item.student.user.name}`}
@@ -86,45 +106,21 @@ export const InscriptionCreate = (props: createProps) => {
               <Grid item xs={12} sm={6} sx={{ padding: '5px' }}>
                 <ComponentInput
                   type="text"
-                  label="Nombre"
-                  name="name"
-                  value={name}
+                  label="Monto recibido"
+                  name="amountDelivered"
+                  value={amountDelivered}
                   onChange={onInputChange}
-                  error={!!nameValid && formSubmitted}
-                  helperText={formSubmitted ? nameValid : ''}
+                  error={!!amountDeliveredValid && formSubmitted}
+                  helperText={formSubmitted ? amountDeliveredValid : ''}
                 />
               </Grid>
-              <Grid item xs={12} sm={6} sx={{ padding: '5px' }}>
-                <ComponentInput
-                  type="text"
-                  label="Apellido"
-                  name="lastName"
-                  value={lastName}
-                  onChange={onInputChange}
-                  error={!!lastNameValid && formSubmitted}
-                  helperText={formSubmitted ? lastNameValid : ''}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} sx={{ padding: '5px' }}>
-                <ComponentInput
-                  type="text"
-                  label="Cordigo de estudiante"
-                  name="code"
-                  value={code}
-                  onChange={onInputChange}
-                  error={!!codeValid && formSubmitted}
-                  helperText={formSubmitted ? codeValid : ''}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} sx={{ padding: '5px' }}>
-                <ComponentInput
-                  type="text"
-                  label="Correo"
-                  name="email"
-                  value={email}
-                  onChange={onInputChange}
-                  error={!!emailValid && formSubmitted}
-                  helperText={formSubmitted ? emailValid : ''}
+              <Grid item xs={12} sm={12} sx={{ padding: '5px' }}>
+                <ComponentSelect
+                  label={student != null ? 'Estudiante' : ''}
+                  title={student != null ? student.name : 'Estudiante'}
+                  onPressed={() => handleModalStudent(true)}
+                  error={!!studentValid && formSubmitted}
+                  helperText={formSubmitted ? studentValid : ''}
                 />
               </Grid>
             </Grid>

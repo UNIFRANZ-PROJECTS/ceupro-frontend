@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { coffeApi } from '@/services';
 import {
-  setCategories,
   setAddSubject,
   setUpdateSubject,
   setDeleteSubject,
+  setSubjects,
 } from '@/store';
 import { useAlertStore, useErrorStore } from '.';
 
@@ -18,7 +18,7 @@ export const useSubjectStore = () => {
     try {
       const { data } = await coffeApi.get('/subject');
       console.log(data);
-      dispatch(setCategories({ Subjects: data.Subjects }));
+      dispatch(setSubjects({ subjects: data.subjects }));
     } catch (error) {
       handleError(error);
     }
@@ -27,7 +27,7 @@ export const useSubjectStore = () => {
     try {
       const { data } = await coffeApi.post('/subject/', body);
       console.log(data);
-      dispatch(setAddSubject({ ionscription: data }));
+      dispatch(setAddSubject({ subject: data }));
       showSuccess('Materia creada correctamente');
     } catch (error) {
       handleError(error);
@@ -37,7 +37,7 @@ export const useSubjectStore = () => {
     try {
       const { data } = await coffeApi.put(`/subject/${id}`, body);
       console.log(data);
-      dispatch(setUpdateSubject({ ionscription: data }));
+      dispatch(setUpdateSubject({ subject: data }));
       showSuccess('Materia editada correctamente');
     } catch (error) {
       handleError(error);

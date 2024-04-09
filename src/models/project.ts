@@ -1,4 +1,4 @@
-import { SeasonModel, TypeProjectModel } from ".";
+import { SeasonModel, StudentModel, TypeProjectModel } from ".";
 
 export interface ProjectModel {
   id: number;
@@ -13,12 +13,12 @@ export interface FormProjectModel {
   title: string;
   category: TypeProjectModel|null;
   typeProject: TypeProjectModel|null;
-  season: SeasonModel|null;
+  students:StudentModel[]
 }
 
 export interface FormProjectValidations {
   title: [(value: string) => boolean, string];
   category: [(value: TypeProjectModel) => boolean, string];
   typeProject: [(value: TypeProjectModel) => boolean, string];
-  season: [(value: SeasonModel) => boolean, string];
+  students: [(value: StudentModel[]) => boolean, string];
 }
