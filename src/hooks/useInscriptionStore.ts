@@ -7,6 +7,7 @@ import {
   setDeleteInscription,
 } from '@/store';
 import { useAlertStore, useErrorStore } from '.';
+import printJS from 'print-js';
 
 export const useInscriptionStore = () => {
   const { inscriptions } = useSelector((state: any) => state.inscriptions);
@@ -28,6 +29,16 @@ export const useInscriptionStore = () => {
       const { data } = await coffeApi.post('/inscription/', body);
       console.log(data);
       dispatch(setAddInscription({ inscription: data }));
+      // PDF
+      const byteCharacters = atob(data.document.pdfBase64);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: 'application/pdf' });
+      const pdfURL = window.URL.createObjectURL(blob);
+      printJS(pdfURL);
       showSuccess('Inscripción creado correctamente');
     } catch (error) {
       throw handleError(error);
