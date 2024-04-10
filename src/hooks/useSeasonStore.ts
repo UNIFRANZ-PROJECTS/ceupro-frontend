@@ -6,14 +6,25 @@ import {
   setUpdateSeason,
   setDeleteSeason,
   setEnableSeason,
+  setSeasonsEnable,
 } from '@/store';
 import { useAlertStore, useErrorStore } from '.';
 
 export const useSeasonStore = () => {
-  const { seasons } = useSelector((state: any) => state.seasons);
+  const { seasons,seasonEnable } = useSelector((state: any) => state.seasons);
   const dispatch = useDispatch();
   const { handleError } = useErrorStore();
   const { showSuccess, showWarning, showError } = useAlertStore();
+
+  const getSeasonEnable = async () => {
+    try {
+      const { data } = await coffeApi.get('/season/enable');
+      console.log(data);
+      dispatch(setSeasonsEnable({ season: data }));
+    } catch (error) {
+      throw handleError(error);
+    }
+  };
 
   const getSeasons = async () => {
     try {
@@ -21,7 +32,7 @@ export const useSeasonStore = () => {
       console.log(data);
       dispatch(setSeasons({ seasons: data.seasons }));
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const createSeason = async (body: object) => {
@@ -31,7 +42,7 @@ export const useSeasonStore = () => {
       dispatch(setAddSeason({ season: data }));
       showSuccess('Temporada creado correctamente');
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const updateSeason = async (id: number, body: object) => {
@@ -41,7 +52,7 @@ export const useSeasonStore = () => {
       dispatch(setUpdateSeason({ season: data }));
       showSuccess('Temporada editado correctamente');
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const deleteSeason = async (id: number) => {
@@ -55,7 +66,7 @@ export const useSeasonStore = () => {
         showError('Cancelado', 'La Temporada esta a salvo :)');
       }
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const enableSeason = async (id: number) => {
@@ -65,14 +76,16 @@ export const useSeasonStore = () => {
       dispatch(setEnableSeason({ season: data }));
       showSuccess('Temporada habilitado correctamente');
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
 
   return {
     //* Propiedades
     seasons,
+    seasonEnable,
     //* Métodos
+    getSeasonEnable,
     getSeasons,
     createSeason,
     updateSeason,

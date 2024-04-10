@@ -20,7 +20,7 @@ export const useTeacherStore = () => {
       console.log(data);
       dispatch(setTeachers({ teachers: data.teachers }));
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const createTeacher = async (body: object) => {
@@ -30,7 +30,7 @@ export const useTeacherStore = () => {
       dispatch(setAddTeacher({ teacher: data }));
       showSuccess('Docente creado correctamente');
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const updateTeacher = async (id: number, body: object) => {
@@ -40,7 +40,7 @@ export const useTeacherStore = () => {
       dispatch(setUpdateTeacher({ teacher: data }));
       showSuccess('Docente editado correctamente');
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const deleteTeacher = async (id: number) => {
@@ -54,7 +54,7 @@ export const useTeacherStore = () => {
         showError('Cancelado', 'El Docente esta a salvo :)');
       }
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
 

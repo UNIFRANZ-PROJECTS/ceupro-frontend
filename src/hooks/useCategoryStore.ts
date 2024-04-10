@@ -15,9 +15,13 @@ export const useCategoryStore = () => {
   const { showSuccess, showWarning, showError } = useAlertStore();
 
   const getCategories = async () => {
-    const { data } = await coffeApi.get('/category');
-    console.log(data);
-    dispatch(setCategories({ categories: data.categories }));
+    try {
+      const { data } = await coffeApi.get('/category');
+      console.log(data);
+      dispatch(setCategories({ categories: data.categories }));
+    } catch (error) {
+      throw handleError(error);
+    }
   };
   const createCategory = async (body: object) => {
     try {
@@ -26,7 +30,7 @@ export const useCategoryStore = () => {
       dispatch(setAddCategory({ category: data }));
       showSuccess('Categoria creada correctamente');
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const updateCategory = async (id: number, body: object) => {
@@ -36,7 +40,7 @@ export const useCategoryStore = () => {
       dispatch(setUpdateCategory({ category: data }));
       showSuccess('Categoria editada correctamente');
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const deleteCategory = async (id: number) => {
@@ -50,7 +54,7 @@ export const useCategoryStore = () => {
         showError('Cancelado', 'La categoria esta a salvo :)');
       }
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
 

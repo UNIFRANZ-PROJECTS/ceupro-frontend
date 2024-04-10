@@ -20,7 +20,7 @@ export const useSubjectStore = () => {
       console.log(data);
       dispatch(setSubjects({ subjects: data.subjects }));
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const createSubject = async (body: object) => {
@@ -30,7 +30,7 @@ export const useSubjectStore = () => {
       dispatch(setAddSubject({ subject: data }));
       showSuccess('Materia creada correctamente');
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const updateSubject = async (id: number, body: object) => {
@@ -40,7 +40,7 @@ export const useSubjectStore = () => {
       dispatch(setUpdateSubject({ subject: data }));
       showSuccess('Materia editada correctamente');
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const deleteSubject = async (id: number) => {
@@ -54,7 +54,7 @@ export const useSubjectStore = () => {
         showError('Cancelado', 'La Materia esta a salvo :)');
       }
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
 

@@ -39,18 +39,18 @@ export const RoleCreate = (props: createProps) => {
     setModal(value);
   }, []);
 
-  const sendSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const sendSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setFormSubmitted(true);
     if (!isFormValid) return;
     if (item == null) {
-      postCreateRole(
+      await postCreateRole(
         {
           name: name.trim(),
           permissions: permissions.map((e: PermissionModel) => e.id)
         });
     } else {
-      putUpdateRole(item.id,
+      await putUpdateRole(item.id,
         {
           name: name.trim(),
           permissions: permissions.map((e: PermissionModel) => e.id)
@@ -89,7 +89,7 @@ export const RoleCreate = (props: createProps) => {
         <form onSubmit={sendSubmit}>
           <DialogContent sx={{ display: 'flex' }}>
             <Grid container>
-              <Grid item xs={12} sm={6} sx={{ padding: '5px' }}>
+              <Grid item xs={12} sm={12} sx={{ padding: '5px' }}>
                 <ComponentInput
                   type="text"
                   label="Nombre"

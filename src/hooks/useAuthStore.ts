@@ -23,7 +23,7 @@ export const useAuthStore = () => {
       dispatch(setRoleUser({ role }));
     } catch (error) {
       dispatch(onLogout());
-      handleError(error);
+      throw handleError(error);
     }
   };
   const checkAuthToken = async () => {

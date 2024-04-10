@@ -3,7 +3,7 @@ import {
   ComponentSelect,
   ModalSelectComponent,
 } from '@/components';
-import { useForm, useInscriptionStore } from '@/hooks';
+import { useForm, useInscriptionStore, useSeasonStore } from '@/hooks';
 import {
   FormInscriptionModel,
   FormInscriptionValidations,
@@ -16,8 +16,9 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  Typography,
 } from '@mui/material';
-import { FormEvent, useCallback, useState } from 'react';
+import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { StudentTable } from '../student';
 
 interface createProps {
@@ -49,19 +50,20 @@ export const InscriptionCreate = (props: createProps) => {
     studentValid,
   } = useForm(item ?? formFields, formValidations);
   const { createInscription, updateInscription } = useInscriptionStore();
+  const { seasonEnable, getSeasonEnable } = useSeasonStore();
   const [formSubmitted, setFormSubmitted] = useState(false);
 
-  const sendSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const sendSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setFormSubmitted(true);
     if (!isFormValid) return;
     if (item == null) {
-      createInscription({
+      await createInscription({
         amountDelivered: parseFloat(amountDelivered.trim()),
         studentId: student.id,
       });
     } else {
-      updateInscription(item.id, {
+      await updateInscription(item.id, {
         amountDelivered: parseFloat(amountDelivered.trim()),
         studentId: student.id,
       });
@@ -73,6 +75,11 @@ export const InscriptionCreate = (props: createProps) => {
   const handleModalStudent = useCallback((value: boolean) => {
     setModalStudent(value);
   }, []);
+
+  useEffect(() => {
+    getSeasonEnable();
+  }, []);
+
   return (
     <>
       {modalStudent && (
@@ -98,12 +105,16 @@ export const InscriptionCreate = (props: createProps) => {
       )}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>
-          {item == null ? 'Nueva Inscripción' : `${item.student.user.name}`}
+          {item == null ? 'Nueva Inscripción' : `${item.student.name}`}
         </DialogTitle>
         <form onSubmit={sendSubmit}>
           <DialogContent sx={{ display: 'flex' }}>
             <Grid container>
-              <Grid item xs={12} sm={6} sx={{ padding: '5px' }}>
+              {seasonEnable && <Grid item xs={12} sm={12} sx={{ padding: '5px' }}>
+                <Typography>{`Temporada: ${seasonEnable.name}`}</Typography>
+                <Typography>{`Monto a pagar : ${seasonEnable.price} Bs`}</Typography>
+              </Grid>}
+              <Grid item xs={12} sm={12} sx={{ padding: '5px' }}>
                 <ComponentInput
                   type="text"
                   label="Monto recibido"

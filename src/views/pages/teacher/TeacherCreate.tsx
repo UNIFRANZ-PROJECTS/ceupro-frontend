@@ -1,5 +1,5 @@
 import { ComponentInput } from '@/components';
-import { useForm, useSeasonStore, useTeacherStore } from '@/hooks';
+import { useForm, useTeacherStore } from '@/hooks';
 import {
   FormTeacherModel,
   FormTeacherValidations,
@@ -53,19 +53,19 @@ export const TeacherCreate = (props: createProps) => {
   const { createTeacher, updateTeacher } = useTeacherStore();
   const [formSubmitted, setFormSubmitted] = useState(false);
 
-  const sendSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const sendSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setFormSubmitted(true);
     if (!isFormValid) return;
     if (item == null) {
-      createTeacher({
+      await createTeacher({
         ci: ci.trim(),
         name: name.trim(),
         lastName: lastName.trim(),
         email: email.trim(),
       });
     } else {
-      updateTeacher(item.id, {
+      await updateTeacher(item.id, {
         ci: ci.trim(),
         name: name.trim(),
         lastName: lastName.trim(),
@@ -80,7 +80,7 @@ export const TeacherCreate = (props: createProps) => {
     <>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>
-          {item == null ? 'Nuevo Docente' : `${item.user.name}`}
+          {item == null ? 'Nuevo Docente' : `${item.name}`}
         </DialogTitle>
         <form onSubmit={sendSubmit}>
           <DialogContent sx={{ display: 'flex' }}>

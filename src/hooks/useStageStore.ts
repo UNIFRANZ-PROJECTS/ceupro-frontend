@@ -20,7 +20,7 @@ export const useStageStore = () => {
       console.log(data);
       dispatch(setStages({ stages: data.stages }));
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
 
@@ -31,7 +31,7 @@ export const useStageStore = () => {
       dispatch(setAddStage({ stage: data }));
       showSuccess('Etapa creada correctamente');
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
 
@@ -42,7 +42,7 @@ export const useStageStore = () => {
       dispatch(setUpdateStage({ stage: data }));
       showSuccess('Etapa editada correctamente');
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
 
@@ -57,7 +57,7 @@ export const useStageStore = () => {
         showError('Cancelado', 'La etapa esta a salvo :)');
       }
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
 

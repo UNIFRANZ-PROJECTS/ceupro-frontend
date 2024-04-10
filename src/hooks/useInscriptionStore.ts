@@ -20,7 +20,7 @@ export const useInscriptionStore = () => {
       console.log(data);
       dispatch(setInscriptions({ inscriptions: data.inscriptions }));
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const createInscription = async (body: object) => {
@@ -30,7 +30,7 @@ export const useInscriptionStore = () => {
       dispatch(setAddInscription({ inscription: data }));
       showSuccess('Inscripción creado correctamente');
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const updateInscription = async (id: number, body: object) => {
@@ -40,7 +40,7 @@ export const useInscriptionStore = () => {
       dispatch(setUpdateInscription({ inscription: data }));
       showSuccess('Inscripción editado correctamente');
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const deleteInscription = async (id: number) => {
@@ -54,7 +54,7 @@ export const useInscriptionStore = () => {
         showError('Cancelado', 'La inscripción esta a salvo :)');
       }
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
 

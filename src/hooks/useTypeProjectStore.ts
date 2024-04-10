@@ -20,7 +20,7 @@ export const useTypeProjectStore = () => {
       console.log(data);
       dispatch(setTypeProjects({ typeProjects: data.typeProjects }));
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const createTypeProject = async (body: object) => {
@@ -30,7 +30,7 @@ export const useTypeProjectStore = () => {
       dispatch(setAddTypeProject({ typeProject: data }));
       showSuccess('Tipo de proyecto creada correctamente');
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const updateTypeProject = async (id: number, body: object) => {
@@ -40,7 +40,7 @@ export const useTypeProjectStore = () => {
       dispatch(setUpdateTypeProject({ typeProject: data }));
       showSuccess('Tipo de proyecto editada correctamente');
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const deleteTypeProject = async (id: number) => {
@@ -54,7 +54,7 @@ export const useTypeProjectStore = () => {
         showError('Cancelado', 'El Tipo de proyecto esta a salvo :)');
       }
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
 

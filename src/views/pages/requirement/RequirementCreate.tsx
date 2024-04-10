@@ -48,19 +48,19 @@ export const RequirementCreate = (props: createProps) => {
     event.preventDefault();
     setFormSubmitted(true);
     if (!isFormValid) return;
-    if (item == null) {
-      await createRequirement({
-        name: name.trim(),
-        description: description.trim(),
-      });
-    } else {
-      await updateRequirement(item.id, {
-        name: name.trim(),
-        description: description.trim(),
-      });
-    }
-    handleClose();
-    onResetForm();
+      if (item == null) {
+        await createRequirement({
+          name: name.trim(),
+          description: description.trim(),
+        });
+      } else {
+        await updateRequirement(item.id, {
+          name: name.trim(),
+          description: description.trim(),
+        });
+      }
+      handleClose();
+      onResetForm();
   };
 
   return (

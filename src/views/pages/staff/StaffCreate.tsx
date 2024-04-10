@@ -55,19 +55,19 @@ export const StaffCreate = (props: createProps) => {
   const { createStaff, updateStaff } = useStaffStore();
   const [formSubmitted, setFormSubmitted] = useState(false);
 
-  const sendSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const sendSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setFormSubmitted(true);
     if (!isFormValid) return;
     if (item == null) {
-      createStaff({
+      await createStaff({
         name: name.trim(),
         lastName: lastName.trim(),
         email: email.trim(),
         roleId: role.id,
       });
     } else {
-      updateStaff(item.id, {
+      await updateStaff(item.id, {
         name: name.trim(),
         lastName: lastName.trim(),
         email: email.trim(),
@@ -107,7 +107,7 @@ export const StaffCreate = (props: createProps) => {
       )}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>
-          {item == null ? 'Nuevo Estudiante' : `${item.user.name}`}
+          {item == null ? 'Nuevo Estudiante' : `${item.name}`}
         </DialogTitle>
         <form onSubmit={sendSubmit}>
           <DialogContent sx={{ display: 'flex' }}>

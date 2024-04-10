@@ -1,9 +1,8 @@
 import { FormUserModel, FormUserValidations, RoleModel, UserModel } from ".";
 
-export interface StaffModel {
+export interface StaffModel extends  UserModel{
   id: number;
   role: RoleModel;
-  user: UserModel;
 }
 
 export interface FormStaffModel extends FormUserModel {
@@ -13,5 +12,3 @@ export interface FormStaffModel extends FormUserModel {
 export interface FormStaffValidations extends FormUserValidations {
   role: [(value: RoleModel) => boolean, string];
 }
-
-

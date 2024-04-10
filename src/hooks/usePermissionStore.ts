@@ -14,7 +14,7 @@ export const usePermissionStore = () => {
       console.log(data);
       dispatch(setPermissions({ permissions: data.permissions }));
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
 

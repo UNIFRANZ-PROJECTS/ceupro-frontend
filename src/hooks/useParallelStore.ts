@@ -20,7 +20,7 @@ export const useParallelStore = () => {
       console.log(data);
       dispatch(setParallels({ parallels: data.parallels }));
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const createParallel = async (body: object) => {
@@ -30,7 +30,7 @@ export const useParallelStore = () => {
       dispatch(setAddParallel({ parallel: data }));
       showSuccess('Paralelo creado correctamente');
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const updateParallel = async (id: number, body: object) => {
@@ -40,7 +40,7 @@ export const useParallelStore = () => {
       dispatch(setUpdateParallel({ parallel: data }));
       showSuccess('Paralelo editado correctamente');
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const deleteParallel = async (id: number) => {
@@ -54,7 +54,7 @@ export const useParallelStore = () => {
         showError('Cancelado', 'El paralelo esta a salvo :)');
       }
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
 

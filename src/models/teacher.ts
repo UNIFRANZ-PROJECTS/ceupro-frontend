@@ -1,9 +1,8 @@
 import { FormUserModel, FormUserValidations, UserModel } from ".";
 
-export interface TeacherModel {
+export interface TeacherModel extends UserModel  {
   id: number;
   ci: string;
-  user: UserModel;
 }
 
 export interface FormTeacherModel extends FormUserModel {

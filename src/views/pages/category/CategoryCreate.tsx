@@ -11,7 +11,6 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Grid,
 } from '@mui/material';
 import { FormEvent, useState } from 'react';
 
@@ -39,16 +38,16 @@ export const CategoryCreate = (props: createProps) => {
     formValidations
   );
 
-  const sendSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const sendSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setFormSubmitted(true);
     if (!isFormValid) return;
     if (item == null) {
-      createCategory({
+      await createCategory({
         name: name.trim(),
       });
     } else {
-      updateCategory(item.id, {
+      await updateCategory(item.id, {
         name: name.trim(),
       });
     }
@@ -64,19 +63,15 @@ export const CategoryCreate = (props: createProps) => {
         </DialogTitle>
         <form onSubmit={sendSubmit}>
           <DialogContent sx={{ display: 'flex' }}>
-            <Grid container>
-              <Grid item xs={12} sm={9} sx={{ padding: '5px' }}>
-                <ComponentInput
-                  type="text"
-                  label="Nombre"
-                  name="name"
-                  value={name}
-                  onChange={onInputChange}
-                  error={!!nameValid && formSubmitted}
-                  helperText={formSubmitted ? nameValid : ''}
-                />
-              </Grid>
-            </Grid>
+            <ComponentInput
+              type="text"
+              label="Nombre"
+              name="name"
+              value={name}
+              onChange={onInputChange}
+              error={!!nameValid && formSubmitted}
+              helperText={formSubmitted ? nameValid : ''}
+            />
           </DialogContent>
           <DialogActions>
             <Button

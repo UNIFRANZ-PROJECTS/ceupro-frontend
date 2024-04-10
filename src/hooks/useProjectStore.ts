@@ -20,7 +20,7 @@ export const useProjectStore = () => {
       console.log(data);
       dispatch(setCategories({ projects: data.projects }));
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const createProject = async (body: object) => {
@@ -30,7 +30,7 @@ export const useProjectStore = () => {
       dispatch(setAddProject({ project: data }));
       showSuccess('Proyecto creado correctamente');
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const updateProject = async (id: number, body: object) => {
@@ -40,7 +40,7 @@ export const useProjectStore = () => {
       dispatch(setUpdateProject({ project: data }));
       showSuccess('Proyecto editado correctamente');
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const deleteProject = async (id: number) => {
@@ -54,7 +54,7 @@ export const useProjectStore = () => {
         showError('Cancelado', 'El proyecto esta a salvo :)');
       }
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
 

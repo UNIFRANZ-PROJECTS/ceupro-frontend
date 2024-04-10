@@ -37,7 +37,7 @@ export const TeacherTable = (props: tableProps) => {
 
   useEffect(() => {
     const filtered = teachers.filter((e: TeacherModel) =>
-      e.user.name.toLowerCase().includes(query.toLowerCase())
+      e.name.toLowerCase().includes(query.toLowerCase())
     );
     const newList = applyPagination(
       query != '' ? filtered : teachers,
@@ -77,8 +77,8 @@ export const TeacherTable = (props: tableProps) => {
                       />
                     </TableCell>
                   }
-                  <TableCell>{teacher.user.name}</TableCell>
-                  <TableCell>{teacher.user.email}</TableCell>
+                  <TableCell>{teacher.name}</TableCell>
+                  <TableCell>{teacher.email}</TableCell>
                   {
                     !stateSelect && <TableCell align="right">
                       <Stack

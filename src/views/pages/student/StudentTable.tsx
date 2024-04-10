@@ -1,10 +1,20 @@
-import { ComponentSearch, ComponentTablePagination } from "@/components";
+import { ComponentSearch, ComponentTablePagination } from '@/components';
 import { useStudentStore } from '@/hooks';
-import { StudentModel } from "@/models";
-import { applyPagination } from "@/utils/applyPagination";
-import { DeleteOutline, EditOutlined } from "@mui/icons-material";
-import { Checkbox, IconButton, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import { useEffect, useState } from "react";
+import { StudentModel } from '@/models';
+import { applyPagination } from '@/utils/applyPagination';
+import { DeleteOutline, EditOutlined } from '@mui/icons-material';
+import {
+  Checkbox,
+  IconButton,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from '@mui/material';
+import { useEffect, useState } from 'react';
 
 interface tableProps {
   handleEdit?: (season: StudentModel) => void;
@@ -29,30 +39,25 @@ export const StudentTable = (props: tableProps) => {
   const [customerList, setCustomerList] = useState<StudentModel[]>([]);
   const [query, setQuery] = useState<string>('');
 
-
   useEffect(() => {
-    getStudents()
+    getStudents();
   }, []);
 
   useEffect(() => {
     const filtered = students.filter((e: StudentModel) =>
-      e.user.name.toLowerCase().includes(query.toLowerCase())
+      e.name.toLowerCase().includes(query.toLowerCase())
     );
     const newList = applyPagination(
       query != '' ? filtered : students,
       page,
       rowsPerPage
     );
-    setCustomerList(newList)
-  }, [students, page, rowsPerPage, query])
-
+    setCustomerList(newList);
+  }, [students, page, rowsPerPage, query]);
 
   return (
     <Stack sx={{ paddingRight: '10px' }}>
-      <ComponentSearch
-        title="Buscar Docente"
-        search={setQuery}
-      />
+      <ComponentSearch title="Buscar Estudiante" search={setQuery} />
       <TableContainer>
         <Table sx={{ minWidth: 350 }} size="small">
           <TableHead>
@@ -60,40 +65,38 @@ export const StudentTable = (props: tableProps) => {
               {stateSelect && <TableCell />}
               <TableCell sx={{ fontWeight: 'bold' }}>Nombre</TableCell>
               <TableCell sx={{ fontWeight: 'bold' }}>Precio</TableCell>
-              {!stateSelect && <TableCell sx={{ fontWeight: 'bold' }}>Acciones</TableCell>}
+              {!stateSelect && (
+                <TableCell sx={{ fontWeight: 'bold' }}>Acciones</TableCell>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
             {customerList.map((student: StudentModel) => {
               const isSelected = items.includes(student.id);
               return (
-                <TableRow key={student.id} >
-                  {
-                    stateSelect && <TableCell padding="checkbox">
+                <TableRow key={student.id}>
+                  {stateSelect && (
+                    <TableCell padding="checkbox">
                       <Checkbox
                         checked={isSelected}
                         onChange={() => itemSelect!(student)}
                       />
                     </TableCell>
-                  }
-                  <TableCell>{student.user.name}</TableCell>
-                  <TableCell>{student.user.email}</TableCell>
-                  {
-                    !stateSelect && <TableCell align="right">
-                      <Stack
-                        alignItems="center"
-                        direction="row"
-                        spacing={2}
-                      >
-                        <IconButton onClick={() => handleEdit!(student)} >
+                  )}
+                  <TableCell>{student.name}</TableCell>
+                  <TableCell>{student.email}</TableCell>
+                  {!stateSelect && (
+                    <TableCell align="right">
+                      <Stack alignItems="center" direction="row" spacing={2}>
+                        <IconButton onClick={() => handleEdit!(student)}>
                           <EditOutlined color="info" />
                         </IconButton>
-                        <IconButton onClick={() => deleteStudent(student.id)} >
+                        <IconButton onClick={() => deleteStudent(student.id)}>
                           <DeleteOutline color="error" />
                         </IconButton>
                       </Stack>
                     </TableCell>
-                  }
+                  )}
                 </TableRow>
               );
             })}
@@ -109,4 +112,4 @@ export const StudentTable = (props: tableProps) => {
       />
     </Stack>
   );
-}
+};

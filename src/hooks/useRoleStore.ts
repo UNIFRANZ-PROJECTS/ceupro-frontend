@@ -15,7 +15,7 @@ export const useRoleStore = () => {
       console.log(data);
       dispatch(setRoles({ roles: data.roles }));
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
 
@@ -26,7 +26,7 @@ export const useRoleStore = () => {
       dispatch(setAddRole({ role: data }));
       showSuccess('Rol creado correctamente');
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
 
@@ -37,7 +37,7 @@ export const useRoleStore = () => {
       dispatch(setUpdateRole({ role: data }));
       showSuccess('Rol editado correctamente');
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
 
@@ -52,7 +52,7 @@ export const useRoleStore = () => {
         showError('Cancelado', 'El rol esta a salvo :)');
       }
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
 

@@ -20,7 +20,7 @@ export const useRequirementStore = () => {
       console.log(data);
       dispatch(setRequirements({ requirements: data.requirements }));
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const createRequirement = async (body: object) => {
@@ -30,7 +30,7 @@ export const useRequirementStore = () => {
       dispatch(setAddRequirement({ requirement: data }));
       showSuccess('Requisito creado correctamente');
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const updateRequirement = async (id: number, body: object) => {
@@ -40,7 +40,7 @@ export const useRequirementStore = () => {
       dispatch(setUpdateRequirement({ requirement: data }));
       showSuccess('Requisito editado correctamente');
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const deleteRequirement = async (id: number) => {
@@ -54,7 +54,7 @@ export const useRequirementStore = () => {
         showError('Cancelado', 'La etapa esta a salvo :)');
       }
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
 

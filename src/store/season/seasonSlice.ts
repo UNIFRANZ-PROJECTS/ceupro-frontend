@@ -5,8 +5,12 @@ export const seasonSlice = createSlice({
   name: 'season',
   initialState: {
     seasons: [] as SeasonModel[],
+    seasonEnable: null as SeasonModel | null,
   },
   reducers: {
+    setSeasonsEnable: (state, action) => {
+      state.seasonEnable = action.payload.season;
+    },
     setSeasons: (state, action) => {
       state.seasons = action.payload.seasons;
     },
@@ -51,6 +55,7 @@ export const seasonSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const {
+  setSeasonsEnable,
   setSeasons,
   setAddSeason,
   setUpdateSeason,

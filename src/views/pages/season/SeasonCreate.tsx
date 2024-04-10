@@ -45,12 +45,12 @@ export const SeasonCreate = (props: createProps) => {
     setModal(value);
   }, []);
 
-  const sendSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const sendSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setFormSubmitted(true);
     if (!isFormValid) return;
     if (item == null) {
-      createSeason(
+      await createSeason(
         {
           name: name.trim(),
           price: parseInt(price),
@@ -59,7 +59,7 @@ export const SeasonCreate = (props: createProps) => {
           stages: stages.map((e: TypeProjectModel) => e.id)
         });
     } else {
-      updateSeason(item.id,
+      await updateSeason(item.id,
         {
           name: name.trim(),
           price: parseInt(price),

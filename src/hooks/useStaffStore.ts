@@ -20,7 +20,7 @@ export const useStaffStore = () => {
       console.log(data);
       dispatch(setStaffs({ staffs: data.staffs }));
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const createStaff = async (body: object) => {
@@ -30,7 +30,7 @@ export const useStaffStore = () => {
       dispatch(setAddStaff({ staff: data }));
       showSuccess('Staff creado correctamente');
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const updateStaff = async (id: number, body: object) => {
@@ -40,7 +40,7 @@ export const useStaffStore = () => {
       dispatch(setUpdateStaff({ staff: data }));
       showSuccess('Staff editado correctamente');
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const deleteStaff = async (id: number) => {
@@ -54,7 +54,7 @@ export const useStaffStore = () => {
         showError('Cancelado', 'El Staff esta a salvo :)');
       }
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
 

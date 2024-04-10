@@ -53,19 +53,19 @@ export const StudentCreate = (props: createProps) => {
   const { createStudent, updateStudent } = useStudentStore();
   const [formSubmitted, setFormSubmitted] = useState(false);
 
-  const sendSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const sendSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setFormSubmitted(true);
     if (!isFormValid) return;
     if (item == null) {
-      createStudent({
+      await createStudent({
         code: code.trim(),
         name: name.trim(),
         lastName: lastName.trim(),
         email: email.trim(),
       });
     } else {
-      updateStudent(item.id, {
+      await updateStudent(item.id, {
         code: code.trim(),
         name: name.trim(),
         lastName: lastName.trim(),
@@ -80,7 +80,7 @@ export const StudentCreate = (props: createProps) => {
     <>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>
-          {item == null ? 'Nuevo Estudiante' : `${item.user.name}`}
+          {item == null ? 'Nuevo Estudiante' : `${item.name}`}
         </DialogTitle>
         <form onSubmit={sendSubmit}>
           <DialogContent sx={{ display: 'flex' }}>

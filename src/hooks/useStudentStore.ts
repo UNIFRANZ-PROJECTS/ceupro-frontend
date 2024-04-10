@@ -20,7 +20,7 @@ export const useStudentStore = () => {
       console.log(data);
       dispatch(setStudents({ students: data.students }));
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const createStudent = async (body: object) => {
@@ -30,7 +30,7 @@ export const useStudentStore = () => {
       dispatch(setAddStudent({ student: data }));
       showSuccess('Estudiante creado correctamente');
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const updateStudent = async (id: number, body: object) => {
@@ -40,7 +40,7 @@ export const useStudentStore = () => {
       dispatch(setUpdateStudent({ student: data }));
       showSuccess('Estudiante editado correctamente');
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
   const deleteStudent = async (id: number) => {
@@ -54,7 +54,7 @@ export const useStudentStore = () => {
         showError('Cancelado', 'El Estudiante esta a salvo :)');
       }
     } catch (error) {
-      handleError(error);
+      throw handleError(error);
     }
   };
 

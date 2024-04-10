@@ -36,7 +36,7 @@ export const StaffTable = (props: tableProps) => {
 
   useEffect(() => {
     const filtered = staffs.filter((e: StaffModel) =>
-      e.user.name.toLowerCase().includes(query.toLowerCase())
+      e.name.toLowerCase().includes(query.toLowerCase())
     );
     const newList = applyPagination(
       query != '' ? filtered : staffs,
@@ -58,26 +58,28 @@ export const StaffTable = (props: tableProps) => {
           <TableHead>
             <TableRow sx={{ backgroundColor: '#E2F6F0' }}>
               {stateSelect && <TableCell />}
-              <TableCell sx={{ fontWeight: 'bold' }}>Nombre</TableCell>
-              <TableCell sx={{ fontWeight: 'bold' }}>Precio</TableCell>
+              <TableCell sx={{ fontWeight: 'bold' }}>Nombre y Apellido</TableCell>
+              <TableCell sx={{ fontWeight: 'bold' }}>Correo</TableCell>
+              <TableCell sx={{ fontWeight: 'bold' }}>Rol</TableCell>
               {!stateSelect && <TableCell sx={{ fontWeight: 'bold' }}>Acciones</TableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
-            {customerList.map((student: StaffModel) => {
-              const isSelected = items.includes(student.id);
+            {customerList.map((staff: StaffModel) => {
+              const isSelected = items.includes(staff.id);
               return (
-                <TableRow key={student.id} >
+                <TableRow key={staff.id} >
                   {
                     stateSelect && <TableCell padding="checkbox">
                       <Checkbox
                         checked={isSelected}
-                        onChange={() => itemSelect!(student)}
+                        onChange={() => itemSelect!(staff)}
                       />
                     </TableCell>
                   }
-                  <TableCell>{student.user.name}</TableCell>
-                  <TableCell>{student.user.email}</TableCell>
+                  <TableCell>{`${staff.name} ${staff.lastName}`}</TableCell>
+                  <TableCell>{staff.email}</TableCell>
+                  <TableCell>{staff.name }</TableCell>
                   {
                     !stateSelect && <TableCell align="right">
                       <Stack
@@ -85,10 +87,10 @@ export const StaffTable = (props: tableProps) => {
                         direction="row"
                         spacing={2}
                       >
-                        <IconButton onClick={() => handleEdit!(student)} >
+                        <IconButton onClick={() => handleEdit!(staff)} >
                           <EditOutlined color="info" />
                         </IconButton>
-                        <IconButton onClick={() => deleteStaff(student.id)} >
+                        <IconButton onClick={() => deleteStaff(staff.id)} >
                           <DeleteOutline color="error" />
                         </IconButton>
                       </Stack>

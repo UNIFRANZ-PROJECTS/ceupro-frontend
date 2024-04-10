@@ -69,19 +69,19 @@ export const ProjectCreate = (props: createProps) => {
     setModal(value);
   }, []);
 
-  const sendSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const sendSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setFormSubmitted(true);
     if (!isFormValid) return;
     if (item == null) {
-      createProject({
+      await createProject({
         title: title.trim(),
         categoryId: category.id,
         typeProjectId: typeProject.id,
         students: students.map((e: StudentModel) => e.id),
       });
     } else {
-      updateProject(item.id, {
+      await updateProject(item.id, {
         title: title.trim(),
         categoryId: category.id,
         typeProjectId: typeProject.id,
@@ -174,7 +174,7 @@ export const ProjectCreate = (props: createProps) => {
         <form onSubmit={sendSubmit}>
           <DialogContent sx={{ display: 'flex' }}>
             <Grid container>
-              <Grid item xs={12} sm={9} sx={{ padding: '5px' }}>
+              <Grid item xs={12} sm={12} sx={{ padding: '5px' }}>
                 <ComponentInput
                   type="text"
                   label="Titulo"
@@ -214,7 +214,7 @@ export const ProjectCreate = (props: createProps) => {
                   helperText={formSubmitted ? studentsValid : ''}
                   items={students.map((e: StudentModel) => ({
                     id: e.id,
-                    name: e.user.name,
+                    name: e.name,
                   }))}
                   onRemove={(v) =>
                     onValueChange('students', [

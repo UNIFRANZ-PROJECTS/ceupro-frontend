@@ -36,7 +36,7 @@ export const InscriptionTable = (props: tableProps) => {
 
   useEffect(() => {
     const filtered = inscriptions.filter((e: InscriptionModel) =>
-      e.student.user.name.toLowerCase().includes(query.toLowerCase())
+      e.student.name.toLowerCase().includes(query.toLowerCase())
     );
     const newList = applyPagination(
       query != '' ? filtered : inscriptions,
@@ -58,7 +58,8 @@ export const InscriptionTable = (props: tableProps) => {
           <TableHead>
             <TableRow sx={{ backgroundColor: '#E2F6F0' }}>
               {stateSelect && <TableCell />}
-              <TableCell sx={{ fontWeight: 'bold' }}>Nombre</TableCell>
+              <TableCell sx={{ fontWeight: 'bold' }}>Código</TableCell>
+              <TableCell sx={{ fontWeight: 'bold' }}>Nombre y apellido</TableCell>
               <TableCell sx={{ fontWeight: 'bold' }}>Precio</TableCell>
               {!stateSelect && <TableCell sx={{ fontWeight: 'bold' }}>Acciones</TableCell>}
             </TableRow>
@@ -76,8 +77,9 @@ export const InscriptionTable = (props: tableProps) => {
                       />
                     </TableCell>
                   }
-                  <TableCell>{inscription.student.user.name}</TableCell>
-                  <TableCell>{inscription.student.user.email}</TableCell>
+                  <TableCell>{inscription.student.name}</TableCell>
+                  <TableCell>{`${inscription.student.name} ${inscription.student.lastName}`}</TableCell>
+                  <TableCell>{inscription.total}</TableCell>
                   {
                     !stateSelect && <TableCell align="right">
                       <Stack

@@ -70,7 +70,6 @@ export const StageCreate = (props: createProps) => {
     event.preventDefault();
     setFormSubmitted(true);
     if (!isFormValid) return;
-    try {
       if (item == null) {
         await createStage({
           name: name.trim(),
@@ -90,7 +89,6 @@ export const StageCreate = (props: createProps) => {
       }
       handleClose();
       onResetForm();
-    } catch (_) {}
   };
 
   const [modal, setModal] = useState(false);
