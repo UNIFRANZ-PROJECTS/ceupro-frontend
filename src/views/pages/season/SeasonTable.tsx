@@ -1,5 +1,4 @@
 import {
-  ComponentButton,
   ComponentSearch,
   ComponentTablePagination,
   MaterialUISwitch,
@@ -33,23 +32,12 @@ interface tableProps {
 }
 
 export const SeasonTable = (props: tableProps) => {
-  const {
-    stateSelect = false,
-    handleEdit,
-    itemSelect,
-    limitInit = 10,
-    items = [],
-  } = props;
+  const { stateSelect = false, handleEdit, itemSelect, limitInit = 10, items = [] } = props;
 
-  const {
-    seasons = [],
-    getSeasons,
-    deleteSeason,
-    enableSeason,
-  } = useSeasonStore();
+  const { seasons = [], getSeasons, deleteSeason, enableSeason } = useSeasonStore();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(limitInit);
-  const [customerList, setCustomerList] = useState<SeasonModel[]>([]);
+  const [seasonList, setCustomerList] = useState<SeasonModel[]>([]);
   const [query, setQuery] = useState<string>('');
 
   useEffect(() => {
@@ -60,11 +48,7 @@ export const SeasonTable = (props: tableProps) => {
     const filtered = seasons.filter((e: SeasonModel) =>
       e.name.toLowerCase().includes(query.toLowerCase())
     );
-    const newList = applyPagination(
-      query != '' ? filtered : seasons,
-      page,
-      rowsPerPage
-    );
+    const newList = applyPagination(query != '' ? filtered : seasons, page, rowsPerPage);
     setCustomerList(newList);
   }, [seasons, page, rowsPerPage, query]);
 
@@ -81,22 +65,17 @@ export const SeasonTable = (props: tableProps) => {
               <TableCell sx={{ fontWeight: 'bold' }}>Inicio</TableCell>
               <TableCell sx={{ fontWeight: 'bold' }}>Fin</TableCell>
               <TableCell sx={{ fontWeight: 'bold' }}>Estado</TableCell>
-              {!stateSelect && (
-                <TableCell sx={{ fontWeight: 'bold' }}>Acciones</TableCell>
-              )}
+              {!stateSelect && <TableCell sx={{ fontWeight: 'bold' }}>Acciones</TableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
-            {customerList.map((season: SeasonModel) => {
+            {seasonList.map((season: SeasonModel) => {
               const isSelected = items.includes(season.id);
               return (
                 <TableRow key={season.id}>
                   {stateSelect && (
                     <TableCell padding="checkbox">
-                      <Checkbox
-                        checked={isSelected}
-                        onChange={() => itemSelect!(season)}
-                      />
+                      <Checkbox checked={isSelected} onChange={() => itemSelect!(season)} />
                     </TableCell>
                   )}
                   <TableCell>{season.name}</TableCell>
@@ -112,9 +91,7 @@ export const SeasonTable = (props: tableProps) => {
                     })}
                   </TableCell>
                   <TableCell>
-                    <SeverityPill
-                      color={season.enableState ? 'success' : 'error'}
-                    >
+                    <SeverityPill color={season.enableState ? 'success' : 'error'}>
                       {season.enableState ? 'Disponible' : 'Inactivo'}
                     </SeverityPill>
                   </TableCell>

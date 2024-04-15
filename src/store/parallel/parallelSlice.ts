@@ -26,17 +26,11 @@ export const parallelSlice = createSlice({
       ];
     },
     setDeleteParallel: (state, action) => {
-      state.parallels = [
-        ...state.parallels.filter((e) => e.id != action.payload.id),
-      ];
+      state.parallels = [...state.parallels.filter((e) => e.id != action.payload.id)];
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const {
-  setParallels,
-  setAddParallel,
-  setUpdateParallel,
-  setDeleteParallel,
-} = parallelSlice.actions;
+export const { setParallels, setAddParallel, setUpdateParallel, setDeleteParallel } =
+  parallelSlice.actions;

@@ -91,18 +91,7 @@ export const SubjectCreate = (props: createProps) => {
                   helperText={formSubmitted ? nameValid : ''}
                 />
               </Grid>
-              <Grid item xs={12} sm={9} sx={{ padding: '5px' }}>
-                <ComponentInput
-                  type="text"
-                  label="Código"
-                  name="code"
-                  value={code}
-                  onChange={onInputChange}
-                  error={!!codeValid && formSubmitted}
-                  helperText={formSubmitted ? codeValid : ''}
-                />
-              </Grid>
-              <Grid item xs={12} sm={9} sx={{ padding: '5px' }}>
+              <Grid item xs={12} sm={3} sx={{ padding: '5px' }}>
                 <ComponentInput
                   type="text"
                   label="Semestre"
@@ -111,6 +100,17 @@ export const SubjectCreate = (props: createProps) => {
                   onChange={onInputChange}
                   error={!!semesterValid && formSubmitted}
                   helperText={formSubmitted ? semesterValid : ''}
+                />
+              </Grid>
+              <Grid item xs={12} sm={12} sx={{ padding: '5px' }}>
+                <ComponentInput
+                  type="text"
+                  label="Código"
+                  name="code"
+                  value={code}
+                  onChange={onInputChange}
+                  error={!!codeValid && formSubmitted}
+                  helperText={formSubmitted ? codeValid : ''}
                 />
               </Grid>
             </Grid>

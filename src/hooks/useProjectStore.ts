@@ -1,11 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { coffeApi } from '@/services';
-import {
-  setCategories,
-  setAddProject,
-  setUpdateProject,
-  setDeleteProject,
-} from '@/store';
+import { saveAs } from 'file-saver';
+import { setAddProject, setUpdateProject, setDeleteProject, setProjects } from '@/store';
 import { useAlertStore, useErrorStore } from '.';
 
 export const useProjectStore = () => {
@@ -18,7 +14,7 @@ export const useProjectStore = () => {
     try {
       const { data } = await coffeApi.get('/project');
       console.log(data);
-      dispatch(setCategories({ projects: data.projects }));
+      dispatch(setProjects({ projects: data.projects }));
     } catch (error) {
       throw handleError(error);
     }
@@ -28,6 +24,16 @@ export const useProjectStore = () => {
       const { data } = await coffeApi.post('/project/', body);
       console.log(data);
       dispatch(setAddProject({ project: data }));
+      //descargar excel
+      const base64 = data.document; // Suponiendo que data.document contiene la cadena base64
+      const binaryString = window.atob(base64);
+      const byteArray = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        byteArray[i] = binaryString.charCodeAt(i);
+      }
+      const blob = new Blob([byteArray], { type: 'application/xml' });
+      saveAs(blob, 'formulario.xlsx');
+
       showSuccess('Proyecto creado correctamente');
     } catch (error) {
       throw handleError(error);

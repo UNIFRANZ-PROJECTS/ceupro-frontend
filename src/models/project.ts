@@ -1,4 +1,4 @@
-import { SeasonModel, StudentModel, TypeProjectModel } from ".";
+import { ParallelModel, SeasonModel, StudentModel, TypeProjectModel } from ".";
 
 export interface ProjectModel {
   id: number;
@@ -7,13 +7,16 @@ export interface ProjectModel {
   category: TypeProjectModel;
   typeProject: TypeProjectModel;
   season: SeasonModel;
+  students:StudentModel[];
+  parallels:ParallelModel[];
 }
 
 export interface FormProjectModel {
   title: string;
   category: TypeProjectModel|null;
   typeProject: TypeProjectModel|null;
-  students:StudentModel[]
+  students:StudentModel[];
+  parallels:ParallelModel[];
 }
 
 export interface FormProjectValidations {
@@ -21,4 +24,5 @@ export interface FormProjectValidations {
   category: [(value: TypeProjectModel) => boolean, string];
   typeProject: [(value: TypeProjectModel) => boolean, string];
   students: [(value: StudentModel[]) => boolean, string];
+  parallels: [(value: ParallelModel[]) => boolean, string];
 }

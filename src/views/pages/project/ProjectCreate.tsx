@@ -7,6 +7,7 @@ import { useForm, useProjectStore } from '@/hooks';
 import {
   FormProjectModel,
   FormProjectValidations,
+  ParallelModel,
   ProjectModel,
   StudentModel,
 } from '@/models';
@@ -22,6 +23,7 @@ import { FormEvent, useCallback, useState } from 'react';
 import { CategoryTable } from '../category';
 import { TypeProjectTable } from '../typeProject';
 import { StudentTable } from '../student';
+import { ParallelTable } from '../parallel';
 
 interface createProps {
   open: boolean;
@@ -34,6 +36,7 @@ const formFields: FormProjectModel = {
   category: null,
   typeProject: null,
   students: [],
+  parallels:[],
 };
 
 const formValidations: FormProjectValidations = {
@@ -44,6 +47,10 @@ const formValidations: FormProjectValidations = {
     (value) => value.length != 0,
     'Debe ingresar porlomenos un estudiante',
   ],
+  parallels: [
+    (value) => value.length != 0,
+    'Debe ingresar porlomenos una materia',
+  ],
 };
 
 export const ProjectCreate = (props: createProps) => {
@@ -53,6 +60,7 @@ export const ProjectCreate = (props: createProps) => {
     category,
     typeProject,
     students,
+    parallels,
     onInputChange,
     isFormValid,
     onValueChange,
@@ -61,12 +69,17 @@ export const ProjectCreate = (props: createProps) => {
     categoryValid,
     typeProjectValid,
     studentsValid,
+    parallelsValid,
   } = useForm(item ?? formFields, formValidations);
   const { createProject, updateProject } = useProjectStore();
   const [formSubmitted, setFormSubmitted] = useState(false);
-  const [modal, setModal] = useState(false);
-  const handleModal = useCallback((value: boolean) => {
-    setModal(value);
+  const [modalStudent, setModalStudent] = useState(false);
+  const handleModalStudent = useCallback((value: boolean) => {
+    setModalStudent(value);
+  }, []);
+  const [modalParallel, setModalParallel] = useState(false);
+  const handleModalParallel = useCallback((value: boolean) => {
+    setModalParallel(value);
   }, []);
 
   const sendSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -79,6 +92,7 @@ export const ProjectCreate = (props: createProps) => {
         categoryId: category.id,
         typeProjectId: typeProject.id,
         students: students.map((e: StudentModel) => e.id),
+        parallels: parallels.map((e:ParallelModel)=> e.id),
       });
     } else {
       await updateProject(item.id, {
@@ -86,6 +100,7 @@ export const ProjectCreate = (props: createProps) => {
         categoryId: category.id,
         typeProjectId: typeProject.id,
         students: students.map((e: StudentModel) => e.id),
+        parallels: parallels.map((e:ParallelModel)=> e.id),
       });
     }
     handleClose();
@@ -144,13 +159,13 @@ export const ProjectCreate = (props: createProps) => {
         </ModalSelectComponent>
       )}
 
-      {modal && (
+      {modalStudent && (
         <ModalSelectComponent
           stateSelect={true}
           stateMultiple={true}
           title="Estudiantes:"
-          opendrawer={modal}
-          handleDrawer={handleModal}
+          opendrawer={modalStudent}
+          handleDrawer={handleModalStudent}
         >
           <StudentTable
             stateSelect={true}
@@ -164,6 +179,29 @@ export const ProjectCreate = (props: createProps) => {
               }
             }}
             items={students.map((e: StudentModel) => e.id)}
+          />
+        </ModalSelectComponent>
+      )}
+      {modalParallel && (
+        <ModalSelectComponent
+          stateSelect={true}
+          stateMultiple={true}
+          title="Materias:"
+          opendrawer={modalParallel}
+          handleDrawer={handleModalParallel}
+        >
+          <ParallelTable
+            stateSelect={true}
+            itemSelect={(v) => {
+              if (parallels.map((e: ParallelModel) => e.id).includes(v.id)) {
+                onValueChange('parallels', [
+                  ...parallels.filter((e: ParallelModel) => e.id != v.id),
+                ]);
+              } else {
+                onValueChange('parallels', [...parallels, v]);
+              }
+            }}
+            items={parallels.map((e: ParallelModel) => e.id)}
           />
         </ModalSelectComponent>
       )}
@@ -185,7 +223,7 @@ export const ProjectCreate = (props: createProps) => {
                   helperText={formSubmitted ? titleValid : ''}
                 />
               </Grid>
-              <Grid item xs={12} sm={12} sx={{ padding: '5px' }}>
+              <Grid item xs={12} sm={6} sx={{ padding: '5px' }}>
                 <ComponentSelect
                   label={category != null ? 'Categoria' : ''}
                   title={category != null ? category.name : 'Categoria'}
@@ -194,7 +232,7 @@ export const ProjectCreate = (props: createProps) => {
                   helperText={formSubmitted ? categoryValid : ''}
                 />
               </Grid>
-              <Grid item xs={12} sm={12} sx={{ padding: '5px' }}>
+              <Grid item xs={12} sm={6} sx={{ padding: '5px' }}>
                 <ComponentSelect
                   label={typeProject != null ? 'Tipo de proyecto' : ''}
                   title={
@@ -209,7 +247,7 @@ export const ProjectCreate = (props: createProps) => {
                 <ComponentSelect
                   label={students != null ? '' : 'Estudiantes'}
                   title={'Estudiantes'}
-                  onPressed={() => handleModal(true)}
+                  onPressed={() => handleModalStudent(true)}
                   error={!!studentsValid && formSubmitted}
                   helperText={formSubmitted ? studentsValid : ''}
                   items={students.map((e: StudentModel) => ({
@@ -219,6 +257,24 @@ export const ProjectCreate = (props: createProps) => {
                   onRemove={(v) =>
                     onValueChange('students', [
                       ...students.filter((e: StudentModel) => e.id != v),
+                    ])
+                  }
+                />
+              </Grid>
+              <Grid item xs={12} sm={12} sx={{ padding: '5px' }}>
+                <ComponentSelect
+                  label={parallels != null ? '' : 'Paralelos'}
+                  title={'Paralelos'}
+                  onPressed={() => handleModalParallel(true)}
+                  error={!!parallelsValid && formSubmitted}
+                  helperText={formSubmitted ? parallelsValid : ''}
+                  items={parallels.map((e: ParallelModel) => ({
+                    id: e.id,
+                    name: e.name,
+                  }))}
+                  onRemove={(v) =>
+                    onValueChange('parallels', [
+                      ...parallels.filter((e: ParallelModel) => e.id != v),
                     ])
                   }
                 />

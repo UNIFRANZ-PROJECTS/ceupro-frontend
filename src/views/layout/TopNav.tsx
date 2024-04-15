@@ -1,22 +1,15 @@
-
-import {
-  Avatar,
-  Box,
-  IconButton,
-  Stack,
-  useMediaQuery
-} from '@mui/material';
+import { Avatar, Box, IconButton, Stack, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { MenuOutlined } from '@mui/icons-material';
-import { usePopover } from '@/hooks';
+import { usePopover, useSeasonStore } from '@/hooks';
 import { AccountPopover } from '.';
 import noimage from '@/assets/images/profile.png';
+import { SeasonModel } from '@/models';
 
-const SIDE_NAV_WIDTH = 200;
 const TOP_NAV_HEIGHT = 50;
 
-export const TopNav = (({ onNavOpen }: { onNavOpen: any }) => {
-
+export const TopNav = ({ onNavOpen }: { onNavOpen: any }) => {
+  const { seasons =[] } = useSeasonStore();
   const theme = useTheme();
   const lgUp = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -25,19 +18,12 @@ export const TopNav = (({ onNavOpen }: { onNavOpen: any }) => {
   return (
     <>
       <Box
-        component="header"
         sx={{
           backdropFilter: 'blur(6px)',
           backgroundColor: () => 'transparent',
           position: 'sticky',
-          left: {
-            lg: `${SIDE_NAV_WIDTH}px`
-          },
-          top: 0,
-          width: {
-            lg: `calc(100% - ${SIDE_NAV_WIDTH}px)`
-          },
-          zIndex: (theme) => theme.zIndex.appBar
+          width:'100%',
+          zIndex: (theme) => theme.zIndex.appBar,
         }}
       >
         <Stack
@@ -47,32 +33,24 @@ export const TopNav = (({ onNavOpen }: { onNavOpen: any }) => {
           spacing={2}
           sx={{
             minHeight: TOP_NAV_HEIGHT,
-            px: 2
+            px: 2,
+            py:1
           }}
         >
-          <Stack
-            alignItems="center"
-            direction="row"
-            spacing={2}
-          >
+          <Stack alignItems="center" direction="row" spacing={2}>
             {!lgUp && (
               <IconButton onClick={onNavOpen}>
                 <MenuOutlined color="primary" />
               </IconButton>
             )}
+            {`Temporada: ${seasons.find((e:SeasonModel)=> e.enableState)?.name??'Sin temporada'}`}
           </Stack>
-          <Stack
-            alignItems="center"
-            spacing={2} direction="row"
-          >
-
-            <Avatar
+          <Avatar
               onClick={accountPopover.handleOpen}
               ref={accountPopover.anchorRef}
               sx={{ cursor: 'pointer', width: 45, height: 45 }}
               src={noimage}
             />
-          </Stack>
         </Stack>
       </Box>
       <AccountPopover
@@ -85,4 +63,4 @@ export const TopNav = (({ onNavOpen }: { onNavOpen: any }) => {
       />
     </>
   );
-});
+};

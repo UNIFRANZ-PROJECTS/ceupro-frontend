@@ -37,7 +37,7 @@ export const ProjectView = () => {
         <ProjectCreate
           open={openDialog}
           handleClose={() => handleDialog(false)}
-          item={itemEdit == null ? null : { ...itemEdit }}
+          item={itemEdit}
         />
       }
     </>

@@ -88,7 +88,7 @@ export const ParallelTable = (props: tableProps) => {
                   <TableCell>{parallel.name}</TableCell>
                   <TableCell>{parallel.subject.name}</TableCell>
                   <TableCell>{parallel.subject.semester}</TableCell>
-                  <TableCell>{parallel.teacher.user.name}</TableCell>
+                  <TableCell>{parallel.teacher.name}</TableCell>
                   {!stateSelect && (
                     <TableCell align="right">
                       <Stack alignItems="center" direction="row" spacing={2}>

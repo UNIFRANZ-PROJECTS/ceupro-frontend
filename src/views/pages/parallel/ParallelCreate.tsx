@@ -1,22 +1,7 @@
-import {
-  ComponentInput,
-  ComponentSelect,
-  ModalSelectComponent,
-} from '@/components';
+import { ComponentInput, ComponentSelect, ModalSelectComponent } from '@/components';
 import { useForm, useParallelStore } from '@/hooks';
-import {
-  FormParallelModel,
-  FormParallelValidations,
-  ParallelModel,
-} from '@/models';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Grid,
-} from '@mui/material';
+import { FormParallelModel, FormParallelValidations, ParallelModel } from '@/models';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from '@mui/material';
 import { FormEvent, useCallback, useState } from 'react';
 import { SubjectTable } from '../subject';
 import { TeacherTable } from '../teacher';
@@ -130,13 +115,11 @@ export const ParallelCreate = (props: createProps) => {
         </ModalSelectComponent>
       )}
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>
-          {item == null ? 'Nuevo Paralelo' : `${item.name}`}
-        </DialogTitle>
+        <DialogTitle>{item == null ? 'Nuevo Paralelo' : `${item.name}`}</DialogTitle>
         <form onSubmit={sendSubmit}>
           <DialogContent sx={{ display: 'flex' }}>
             <Grid container>
-              <Grid item xs={12} sm={9} sx={{ padding: '5px' }}>
+              <Grid item xs={12} sm={12} sx={{ padding: '5px' }}>
                 <ComponentInput
                   type="text"
                   label="Nombre"
@@ -150,7 +133,7 @@ export const ParallelCreate = (props: createProps) => {
               <Grid item xs={12} sm={12} sx={{ padding: '5px' }}>
                 <ComponentSelect
                   label={teacher != null ? 'Docente' : ''}
-                  title={teacher != null ? teacher.user.name : 'Docente'}
+                  title={teacher != null ? teacher.name : 'Docente'}
                   onPressed={() => handleModalTeacher(true)}
                   error={!!teacherValid && formSubmitted}
                   helperText={formSubmitted ? teacherValid : ''}

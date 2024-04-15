@@ -107,7 +107,7 @@ export const StaffCreate = (props: createProps) => {
       )}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>
-          {item == null ? 'Nuevo Estudiante' : `${item.name}`}
+          {item == null ? 'Nuevo Staff' : `${item.name}`}
         </DialogTitle>
         <form onSubmit={sendSubmit}>
           <DialogContent sx={{ display: 'flex' }}>
@@ -145,7 +145,7 @@ export const StaffCreate = (props: createProps) => {
                   helperText={formSubmitted ? emailValid : ''}
                 />
               </Grid>
-              <Grid item xs={12} sm={12} sx={{ padding: '5px' }}>
+              <Grid item xs={12} sm={6} sx={{ padding: '5px' }}>
                 <ComponentSelect
                   label={role != null ? 'Rol' : ''}
                   title={role != null ? role.name : 'Rol'}
