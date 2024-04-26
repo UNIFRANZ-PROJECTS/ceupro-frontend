@@ -18,3 +18,10 @@ export interface FormParallelValidations {
   teacher: [(value: TeacherModel) => boolean, string];
   subject: [(value: SubjectModel) => boolean, string];
 }
+
+export interface FormParallelFileModel {
+  file: File|null;
+}
+export interface FormParallelFileValidations {
+  file: [(value: File) => boolean, string];
+}
