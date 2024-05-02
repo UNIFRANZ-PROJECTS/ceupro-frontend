@@ -27,22 +27,14 @@ export const ParallelUploadFile = (props: createProps) => {
     fileValid,
   } = useForm(formFields, formValidations);
 
-  const { createParallel } = useParallelStore();
+  const { createParallels } = useParallelStore();
 
   const sendSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!isFormValid) return;
-    await createParallel({
-      // name: name.trim(),
-      // teacherId: teacher.id,
-      // subjectId: subject.id,
-    });
+    await createParallels(file);
     handleClose();
     onResetForm();
-  };
-  const handleChange = (file:File) => {
-    console.log(file)
-    // setFile(file);
   };
   return (
     <>
@@ -50,7 +42,7 @@ export const ParallelUploadFile = (props: createProps) => {
         <DialogTitle>{'Carga de excel'}</DialogTitle>
         <form onSubmit={sendSubmit}>
           <DialogContent sx={{ display: 'flex' }}>
-          <FileUploader handleChange={handleChange} name="file" types={["JPG", "PNG", "GIF"]} />
+            <FileUploader handleChange={(file: File) => onValueChange('file', file)} name="file" types={["XLSX"]} />
           </DialogContent>
           <DialogActions>
             <Button

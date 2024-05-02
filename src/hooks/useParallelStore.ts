@@ -33,6 +33,23 @@ export const useParallelStore = () => {
       throw handleError(error);
     }
   };
+  const createParallels = async (file: File) => {
+    try {
+      console.log(file);
+      var formData = new FormData();
+      formData.append('file', file);
+      const { data } = await coffeApi.post('/parallel/file/', formData, {
+        headers: {
+          'content-Type': 'multipart/form-data'
+        }
+      });
+      console.log(data);
+      // dispatch(setAddParallel({ parallel: data }));
+      showSuccess('Paralelos creados correctamente');
+    } catch (error) {
+      throw handleError(error);
+    }
+  };
   const updateParallel = async (id: number, body: object) => {
     try {
       const { data } = await coffeApi.put(`/parallel/${id}`, body);
@@ -64,6 +81,7 @@ export const useParallelStore = () => {
     //* Métodos
     getParallels,
     createParallel,
+    createParallels,
     updateParallel,
     deleteParallel,
   };
