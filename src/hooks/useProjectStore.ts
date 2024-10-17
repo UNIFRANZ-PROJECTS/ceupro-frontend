@@ -63,6 +63,17 @@ export const useProjectStore = () => {
       throw handleError(error);
     }
   };
+  const downloadXlsx = async (id: number) => {
+    try {
+      const { data } = await coffeApi.get(`/project/xlsx/${id}`, {
+        responseType: "arraybuffer",
+      });
+      const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    saveAs(blob, 'formulario.xlsx'); // Guardar el archivo localmente usando file-saver
+    } catch (error) {
+      throw handleError(error);
+    }
+  };
 
   return {
     //* Propiedades
@@ -72,5 +83,6 @@ export const useProjectStore = () => {
     createProject,
     updateProject,
     deleteProject,
+    downloadXlsx,
   };
 };

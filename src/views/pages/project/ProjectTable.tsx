@@ -2,7 +2,7 @@ import { ComponentSearch, ComponentTablePagination } from "@/components";
 import { useProjectStore } from '@/hooks';
 import { ProjectModel } from "@/models";
 import { applyPagination } from "@/utils/applyPagination";
-import { DeleteOutline, EditOutlined } from "@mui/icons-material";
+import { DeleteOutline, DocumentScannerOutlined, EditOutlined } from "@mui/icons-material";
 import { Checkbox, IconButton, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { useEffect, useState } from "react";
 
@@ -24,7 +24,7 @@ export const ProjectTable = (props: tableProps) => {
     items = [],
   } = props;
 
-  const { projects = [], getProjects, deleteProject } = useProjectStore();
+  const { projects = [], getProjects, deleteProject,downloadXlsx } = useProjectStore();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(limitInit);
   const [customerList, setCustomerList] = useState<ProjectModel[]>([]);
@@ -86,6 +86,9 @@ export const ProjectTable = (props: tableProps) => {
                         direction="row"
                         spacing={2}
                       >
+                      <IconButton onClick={() => downloadXlsx(project.id)} >
+                        <DocumentScannerOutlined color="info" />
+                      </IconButton>
                         <IconButton onClick={() => handleEdit!(project)} >
                           <EditOutlined color="info" />
                         </IconButton>
